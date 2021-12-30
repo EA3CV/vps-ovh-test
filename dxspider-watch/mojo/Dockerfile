@@ -51,6 +51,7 @@ RUN apk update && \
 
     apk del --purge gcc make musl-dev ncurses-dev perl-app-cpanminus perl-dev && \
     rm -rf /var/cache/apk/* && \
-    rm -rf /resources
+    rm -rf /resources && \
+    chmod +x entrypoint.sh
 
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
