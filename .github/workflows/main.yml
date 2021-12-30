@@ -20,6 +20,9 @@ jobs:
       
       - name: Ficheros DXSpider-Watch
         run: cp -r dxspider-watch /root
+      
+      - name: Hacer ejecutable
+        run: chmod +x /root/dxspider-watch/dt.sh
 
   build:
     runs-on: self-hosted
