@@ -19,7 +19,7 @@ services:
     pihole:
         container_name: pihole
         image: pihole/pihole:latest
-        hostname: pihole-malbas
+        hostname: pihole-ovh
         networks:
             vpn-net:
                 ipv4_address: 172.0.33.3
@@ -46,7 +46,7 @@ services:
             - NET_ADMIN
             - SYS_MODULE
         dns:
-            - 1.1.1.1
+            - 172.0.33.3
         environment:
             - PUID=1000
             - PGID=1000
