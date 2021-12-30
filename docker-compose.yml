@@ -30,7 +30,7 @@ services:
             - "80:80/tcp"
         environment:
             TZ: 'Europe/Madrid'
-            WEBPASSWORD: 'euripid3s.$'
+            WEBPASSWORD: 'euripid3s.'
         volumes:
             - 'pihole-etc:/etc/pihole/'
             - 'pihole-dnsmasq:/etc/dnsmasq.d/'
@@ -51,7 +51,7 @@ services:
             - PUID=1000
             - PGID=1000
             - TZ=Europe/Madrid
-            - SERVERURL=eb1tr.sytes.net
+            - SERVERURL=149.202.47.39
             - SERVERPORT=51820
             - PEERS=pc,movil,ipad,mac
             - PEERDNS=auto
