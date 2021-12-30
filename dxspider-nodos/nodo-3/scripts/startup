@@ -1,0 +1,20 @@
+set/var $Spot::maxspots = 100
+set/spider AE5E
+set/spider EA3CV-3
+set/spider EA4URE-3
+set/spider EA4URE-4
+set/spider EA4URE-5
+set/spider EA4URE-6
+set/spider F1OYP-6
+set/spider F4EYQ-1
+set/spider IK8HJC-6
+set/spider IW9EDP-6
+set/spider N0OJ-7
+set/spider N5WLS-2
+set/spider N6WS-6
+set/rbn    SK0MMR
+set/rbn    SK1MMR
+set/spider SV5FRI-1
+set/spider VE7CC-1
+set/spider VE9SC
+set/spider WB3FFV-2

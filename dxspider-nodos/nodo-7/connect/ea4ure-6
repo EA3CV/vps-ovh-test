@@ -1,0 +1,4 @@
+timeout 15
+connect telnet ea4ure.com 7326
+'login: ' 'EA4URE-7'
+client EA4URE-6 telnet

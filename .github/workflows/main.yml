@@ -9,16 +9,21 @@ on:
 
 jobs:
 
-  build:
-
+  copy:
     runs-on: self-hosted
+      - name: Ficheros Nodo 3
+        run: cp -r dxspider-nodos/nodo-3 /root/volumenes/dxspider
 
-    #env:
-      #SAMBA: ${{ secrets.SAMBAPASSWORD }}
+      - name: Ficheros Nodo 7
+        run: cp -r dxspider-nodos/nodo-7 /root/volumenes/dxspider
+      
+      - name: Ficheros DXSpider-Watch
+        run: cp -r dxspider-watch /root
 
+  build:
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
-
       - name: Deploy
         run: sudo docker-compose up -d
         

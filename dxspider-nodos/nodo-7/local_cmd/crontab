@@ -1,0 +1,42 @@
+# crontab de EA4URE-7
+# Actualizado a 20211227 EA3CV
+
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('7N4TWL-7') unless connected('7N4TWL-7')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('AE5E')     unless connected('AE5E')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA3CV-2')  unless connected('EA3CV-2')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4RCH-5') unless connected('EA4RCH-5')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA8URL-5') unless connected('EA8URL-5')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('IK5PWJ-6') unless connected('IK5PWJ-6')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('IT9ESI-6') unless connected('IT9ESI-6')
+00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK0MMR')   unless connected('SK0MMR')
+00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK1MMR')   unless connected('SK1MMR')
+
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-2') unless connected('EA4URE-2')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-3') unless connected('EA4URE-3')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-5') unless connected('EA4URE-5')
+00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-6') unless connected('EA4URE-6')
+
+# Mantener file system
+0 0 * 1-12 * spawn("/spider/local_data/debug -type f -mtime +31 | xargs rm -rf")
+2 0 * 1-12 * spawn("find /spider/local_data/log -type f -mtime +62 | xargs rm -rf")
+4 0 * 1-12 * spawn("find /spider/local_data/spots -type f -mtime +31 | xargs rm -rf")
+
+# AutoUpdate USDB
+0 1 * * 1,3,5  spawn("cd /tmp; wget -qN ftp://ftp.w1nr.net/usdbraw.gz; /spider/perl/create_usdb.pl usdbraw.gz")
+5 1 * * 1,3,5  run_cmd("load/usdb")
+10 1 * * 1,3,5 spawn("rm /tmp/usdbraw.gz")
+
+# AutoUpdate Keps
+0 2 * * 2,4,6  spawn("cd /tmp; wget -qN http://www.amsat.org/amsat/ftp/keps/current/nasabare.txt; /spider/perl/convkeps.pl -p nasabare.txt")
+5 2 * * 2,4,6  run_cmd("load/keps")
+10 2 * * 2,4,6 spawn("rm /tmp/nasabare.txt")
+
+# AutoUpdate CTY.DAT
+0 3 * * 0,2,5 spawn("cd /spider/local_data; wget -qN http://www.country-files.com/cty/cty.dat")
+0 3 * * 0,2,5 spawn("cd /spider/local_data; wget -qN http://www.country-files.com/cty/wpxloc.raw")
+2 3 * * 0,2,5 spawn("/spider/perl/create_prefix.pl")
+3 3 * * 0,2,5 run_cmd("load/prefix")
+
+# Estadisticas MQTT JSON
+#* * * * * run_cmd("estadisticas_json")
+#* * * * * run_cmd("bot_stad EA4URE-7")
