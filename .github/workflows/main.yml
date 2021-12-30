@@ -21,8 +21,14 @@ jobs:
       - name: Ficheros DXSpider-Watch
         run: cp -r dxspider-watch /root
       
-      - name: Hacer ejecutable
+      - name: Hacer ejecutable el Script
         run: chmod +x /root/dxspider-watch/dt.sh
+
+      - name: Hacer ejecutable los entrypoint
+        run: chmod +x /root/dxspider-watch/mojo/entrypoint.sh
+
+      - name: Hacer ejecutable los entrypoint
+        run: chmod +x /root/dxspider-watch/on-demand/entrypoint.sh
 
   build:
     runs-on: self-hosted
