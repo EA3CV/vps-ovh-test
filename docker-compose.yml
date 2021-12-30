@@ -1,0 +1,80 @@
+version: "3"
+
+services:
+
+    portainer:
+        image: portainer/portainer-ce
+        networks:
+            vpn-net:
+                ipv4_address: 172.0.33.2
+        container_name: portainer
+        ports:
+            - "9000:9000/tcp"
+            - "8000:8000/tcp"
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - 'portainer:/data'
+        restart: unless-stopped
+
+    pihole:
+        container_name: pihole
+        image: pihole/pihole:latest
+        hostname: pihole-malbas
+        networks:
+            vpn-net:
+                ipv4_address: 172.0.33.3
+        ports:
+            - "53:53/tcp"
+            - "53:53/udp"
+            - "67:67/udp"
+            - "80:80/tcp"
+        environment:
+            TZ: 'Europe/Madrid'
+            WEBPASSWORD: 'euripid3s.$'
+        volumes:
+            - 'pihole-etc:/etc/pihole/'
+            - 'pihole-dnsmasq:/etc/dnsmasq.d/'
+        restart: unless-stopped
+
+    wireguard:
+        image: ghcr.io/linuxserver/wireguard
+        networks:
+            vpn-net:
+                ipv4_address: 172.0.33.4
+        container_name: wireguard
+        cap_add:
+            - NET_ADMIN
+            - SYS_MODULE
+        dns:
+            - 172.0.33.3
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Madrid
+            - SERVERURL=eb1tr.sytes.net
+            - SERVERPORT=51820
+            - PEERS=pc,movil,ipad,mac
+            - PEERDNS=auto
+            - INTERNAL_SUBNET=10.13.13.0
+            - ALLOWEDIPS=0.0.0.0/0
+        volumes:
+            - 'wireguard:/config'
+            - '/lib/modules:/lib/modules'
+        ports:
+            - "51820:51820/udp"
+        sysctls:
+            - net.ipv4.conf.all.src_valid_mark=1
+        restart: unless-stopped
+
+volumes:
+    pihole-etc:
+    pihole-dnsmasq:
+    portainer:
+    wireguard:
+
+networks:
+    vpn-net:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.0.33.0/24
