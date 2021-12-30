@@ -16,25 +16,25 @@ services:
             - 'portainer:/data'
         restart: unless-stopped
 
-    pihole:
-        container_name: pihole
-        image: pihole/pihole:latest
-        hostname: pihole-ovh
-        networks:
-            vpn-net:
-                ipv4_address: 172.0.33.3
-        ports:
-            - "53:53/tcp"
-            - "53:53/udp"
-            - "67:67/udp"
-            - "80:80/tcp"
-        environment:
-            TZ: 'Europe/Madrid'
-            WEBPASSWORD: 'euripid3s.'
-        volumes:
-            - 'pihole-etc:/etc/pihole/'
-            - 'pihole-dnsmasq:/etc/dnsmasq.d/'
-        restart: unless-stopped
+#    pihole:
+#        container_name: pihole
+#        image: pihole/pihole:latest
+#        hostname: pihole-ovh
+#        networks:
+#            vpn-net:
+#                ipv4_address: 172.0.33.3
+#        ports:
+#            - "53:53/tcp"
+#            - "53:53/udp"
+#            - "67:67/udp"
+#            - "80:80/tcp"
+#        environment:
+#            TZ: 'Europe/Madrid'
+#            WEBPASSWORD: 'euripid3s.'
+#        volumes:
+#            - 'pihole-etc:/etc/pihole/'
+#            - 'pihole-dnsmasq:/etc/dnsmasq.d/'
+#        restart: unless-stopped
 
     wireguard:
         image: ghcr.io/linuxserver/wireguard
@@ -46,7 +46,7 @@ services:
             - NET_ADMIN
             - SYS_MODULE
         dns:
-            - 172.0.33.3
+            - 1.1.1.1
         environment:
             - PUID=1000
             - PGID=1000
@@ -67,8 +67,8 @@ services:
         restart: unless-stopped
 
 volumes:
-    pihole-etc:
-    pihole-dnsmasq:
+#    pihole-etc:
+#    pihole-dnsmasq:
     portainer:
     wireguard:
 
