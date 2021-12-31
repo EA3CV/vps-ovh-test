@@ -1,4 +1,0 @@
-timeout 15
-connect telnet 192.168.1.121 7326
-'login: ' 'EA4URE-5'
-client EA4URE-6 telnet

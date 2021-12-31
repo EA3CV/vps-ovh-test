@@ -11,7 +11,7 @@
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK0MMR')   unless connected('SK0MMR')
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK1MMR')   unless connected('SK1MMR')
 
-#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-2') unless connected('EA4URE-2')
+00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-2') unless connected('EA4URE-2')
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-3') unless connected('EA4URE-3')
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-5') unless connected('EA4URE-5')
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-6') unless connected('EA4URE-6')

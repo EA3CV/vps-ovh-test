@@ -25,13 +25,13 @@ $mylatitude = "+40.43300000";
 $mylongitude = "-3.70000000";
 
 # Your locator (USE CAPITAL LETTERS)
-$mylocator = "IN80EJ";
+$mylocator = "JN11BI";
 
 # Your QTH (roughly)
-$myqth = "Madrid, Spain";
+$myqth = "Barcelona, Spain";
 
 # Your e-mail address
-$myemail = "sysop\@ure.es";
+$myemail = "ea3cv\@cronux.net";
 
 # the country codes that my node is located in
 #
