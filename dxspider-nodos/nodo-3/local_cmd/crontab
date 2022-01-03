@@ -1,4 +1,4 @@
-# Actualizado a 20211231 EA3CV
+# Actualizado a 20220103 EA3CV
 # modified 20200523 G1TLH
 
 # Do not use & on the end of "spawn" or "spawn_cmd" as the commands are already in background. You don't need to background them again (and you may not get what you want).

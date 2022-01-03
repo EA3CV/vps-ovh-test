@@ -1,5 +1,5 @@
 # crontab de EA4URE-7
-# Actualizado a 20211227 EA3CV
+# Actualizado a 20220103 EA3CV
 
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('7N4TWL-7') unless connected('7N4TWL-7')
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('AE5E')     unless connected('AE5E')
@@ -11,7 +11,7 @@
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK0MMR')   unless connected('SK0MMR')
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('SK1MMR')   unless connected('SK1MMR')
 
-00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-2') unless connected('EA4URE-2')
+#00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-2') unless connected('EA4URE-2')
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-3') unless connected('EA4URE-3')
 #00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-5') unless connected('EA4URE-5')
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('EA4URE-6') unless connected('EA4URE-6')
@@ -39,4 +39,3 @@
 
 # Estadisticas MQTT JSON
 #* * * * * run_cmd("estadisticas_json")
-#* * * * * run_cmd("bot_stad EA4URE-7")
