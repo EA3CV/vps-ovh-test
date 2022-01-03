@@ -1,0 +1,4 @@
+timeout 15
+connect telnet dxspots.com 7300
+'login: ' 'EA3CV-2'
+client AE5E telnet

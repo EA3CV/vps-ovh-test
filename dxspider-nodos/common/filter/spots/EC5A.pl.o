@@ -1,0 +1,11 @@
+bless( {
+  name => 'EC5A.pl',
+  sort => 'spots',
+  filter1 => {
+    accept => {
+      code => sub { "DUMMY" },
+      asc => '(($r->[0]>=30000 && $r->[0]<=299999))',
+      user => 'on vhf'
+    }
+  }
+}, 'Filter' )

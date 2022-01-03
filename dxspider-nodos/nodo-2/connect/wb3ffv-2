@@ -1,0 +1,4 @@
+timeout 15
+connect telnet dxc.wb3ffv.us 7300
+'login: ' 'EA3CV-2'
+client WB3FFV-2 telnet

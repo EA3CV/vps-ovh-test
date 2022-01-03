@@ -1,0 +1,23 @@
+bless( {
+  filter2 => {
+    accept => {
+      asc => '($r->[8]==3 || $r->[8]==28 || $r->[8]==45)',
+      user => 'call_itu 3,28,45',
+      code => sub { "DUMMY" }
+    }
+  },
+  filter1 => {
+    accept => {
+      code => sub { "DUMMY" },
+      user => 'call_itu 28',
+      asc => '($r->[8]==28)'
+    },
+    reject => {
+      code => sub { "DUMMY" },
+      asc => '($r->[3]=~m{ft}i)',
+      user => 'info ft'
+    }
+  },
+  name => 'EC3BH.pl',
+  sort => 'spots'
+}, 'Filter' )

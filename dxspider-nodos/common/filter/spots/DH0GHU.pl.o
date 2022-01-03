@@ -1,0 +1,16 @@
+{
+   "filter1":{
+      "accept":{
+         "asc":"($r->[11]==5)",
+         "code":null,
+         "user":"by_zone 5"
+      },
+      "reject":{
+         "asc":" !(($r->[11]==14 || $r->[11]==15 || $r->[11]==16 || $r->[11]==20))",
+         "code":null,
+         "user":"not ( by_zone 14,15,16,20 ) "
+      }
+   },
+   "name":"DH0GHU.pl",
+   "sort":"spots"
+}

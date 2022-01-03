@@ -1,0 +1,11 @@
+{
+   "filter1":{
+      "accept":{
+         "asc":"1",
+         "code":null,
+         "user":"all"
+      }
+   },
+   "name":"OH6NEQ.pl",
+   "sort":"ann"
+}

@@ -1,0 +1,11 @@
+{
+   "filter1":{
+      "accept":{
+         "asc":"($r->[1]=~m{^EG3}) || ($r->[1]=~m{^EG9})",
+         "code":null,
+         "user":"call eg3 or call eg9"
+      }
+   },
+   "name":"EA3CV-8.pl",
+   "sort":"spots"
+}

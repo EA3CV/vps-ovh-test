@@ -1,0 +1,11 @@
+bless( {
+  filter1 => {
+    reject => {
+      user => 'info ft8,ft4',
+      code => sub { "DUMMY" },
+      asc => '($r->[3]=~m{ft8}i || $r->[3]=~m{ft4}i)'
+    }
+  },
+  name => 'EA3CV.pl',
+  sort => 'spots'
+}, 'Filter' )

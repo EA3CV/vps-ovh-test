@@ -1,0 +1,4 @@
+timeout 15
+connect telnet ik8hjc.ns0.it 8000
+'login: ' 'EA3CV-2'
+client IK8HJC-6 telnet

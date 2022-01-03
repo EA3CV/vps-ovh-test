@@ -7,7 +7,7 @@
 #
 # Created by EA3CV
 #
-# 20200615 v2.4
+# 20200513 v2.3
 #
  
 use strict;
@@ -16,7 +16,6 @@ use Time::Piece;
 use Time::Seconds;
 use Data::Dumper;
 use Date::Manip;
-use warnings;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
@@ -27,10 +26,10 @@ my $y = $year;
 my $d = sprintf("%03s", $yday);
 
 my $time = Time::Piece->new;
-$time  = $time - ONE_DAY;
+my $time  = $time - ONE_DAY;
 my $fecha = $time->ymd("");
 
-my $log_dat = "/spider/local_data/debug/$y/$d.dat";
+my $log_dat = "/home/sysop/spider/local_data/debug/$y/$d.dat";
 
 open INPUT, '<', $log_dat || die "Can not open input file: $!\n";
 
@@ -58,7 +57,7 @@ while($line = <INPUT>){
 }
 close INPUT;
 
-open(LOG,">/spider/local_data/debug/list_conn_$fecha.txt");
+open(LOG,">/home/sysop/spider/local_data/debug/list_conn_$fecha.txt");
 
 say LOG " ";
 say LOG "Date        Conn      Disc      Call       Time";
@@ -121,7 +120,7 @@ say LOG " ";
 
 close LOG;
 
-sub delta {
+sub delta() {
         my ($date1, $time1 ,$date2, $time2) = @_;
 
         $date1 = $date1." ".$time1;
@@ -135,7 +134,7 @@ sub delta {
         return $diff[4], $diff[5];
 }
 
-sub sum {
+sub sum() {
         my ($call, $h ,$m) = @_;
 	foreach my $k (0 .. $#sum) {
            if ($sum[$k][0] eq $call) {
@@ -155,3 +154,4 @@ sub sum {
            }
 	}
 }
+

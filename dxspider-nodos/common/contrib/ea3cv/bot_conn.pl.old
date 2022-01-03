@@ -10,8 +10,8 @@
 # Created by Kin EA3CV
 # ea3cv@cronux.net
 #
-# v1.3a
-# 20201125
+# v1.2a
+# 20201016
 #
 
 use strict;
@@ -39,7 +39,6 @@ while (my $line = <$data>) {
 	# 1590336759^DXCommand^EC3BH disconnected
 	# 1590337177^DXProt^IW9EDP-6 Disconnected
 	# 1590337500^DXProt^IW9EDP-6 connected from 151.54.254.233
-	# 1606290021^^OE3GCU has too many connections (3) at HA6DX,VE7CC-1,N6WS-6 - disconnected
 
 	my @campos = split("\\^", $line);
 	$campos[2] =~ m/(\w+||\w+\-\d+)\s(\w+)/;
@@ -55,21 +54,18 @@ while (my $line = <$data>) {
 	# Users
         if ($campos[1] eq "DXCommand") {
 	        if ($2 eq "connected") {
-        	        telegram($server,"<----", "$1 Connect \(U\)");
+        	        telegram($server,"<-----", "$1 Connect \(U\)");
 	        } elsif ($2 eq "disconnected") {
-        	        telegram($server,"--X--", "$1 Disconnect \(U\)");
+        	        telegram($server,"--//--", "$1 Disconnect \(U\)");
 	        }
 	# Nodes
 	} elsif ($campos[1] eq "DXProt") {
                 if ($2 eq "connected") {
-                        telegram($server,"<----", "$1 Connect \(N\)");
+                        telegram($server,"<-----", "$1 Connect \(N\)");
                 } elsif ($2 eq "Disconnected") {
-                        telegram($server,"--X--", "$1 Disconnect \(N\)");
+                        telegram($server,"--//--", "$1 Disconnect \(N\)");
                 }
-	# Has too many connections
-        } elsif ($campos[1] eq "" and $2 eq "has too many connections") {
-                        telegram($server,"--X--", "$1 Many connections");
-        }
+	}
 }
 
 close $data;

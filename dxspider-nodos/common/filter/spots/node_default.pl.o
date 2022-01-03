@@ -1,0 +1,11 @@
+bless( {
+  sort => 'spots',
+  name => 'node_default.pl',
+  filter9 => {
+    reject => {
+      asc => '($r->[3]=~/db/i) && ($r->[3]=~/wpm/i) && ($r->[3]=~/cq/i) && !($r->[7]=~/^SK1MMR/)',
+      user => 'info db and info wpm and info cq and not origin sk1mmr',
+      code => sub { "DUMMY" }
+    }
+  }
+}, 'Filter' )
