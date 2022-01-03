@@ -10,10 +10,10 @@ package main;
 
 # this really does need to change for your system!!!!
 # use CAPITAL LETTERS
-$mycall = "EA3CV-3";
+$mycall = "EA3CV-2";
 
 # your name
-$myname = "";
+$myname = "Kin";
 
 # Your 'normal' callsign (in CAPTTAL LETTERS)
 $myalias = "EA3CV";
