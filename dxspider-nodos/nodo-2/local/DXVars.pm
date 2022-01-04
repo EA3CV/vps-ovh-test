@@ -19,10 +19,10 @@ $myname = "Kin";
 $myalias = "EA3CV";
 
 # Your latitude (+)ve = North (-)ve = South in degrees and decimal degrees
-$mylatitude = "+40.43300000";
+$mylatitude = "+41.354167";
 
 # Your Longtitude (+)ve = East, (-)ve = West in degrees and decimal degrees
-$mylongitude = "-3.70000000";
+$mylongitude = "+2.125000";
 
 # Your locator (USE CAPITAL LETTERS)
 $mylocator = "JN11BI";
