@@ -12,6 +12,9 @@ jobs:
   copy:
     runs-on: self-hosted
     steps:
+      - name: Ficheros Nodo 2
+        run: cp -r dxspider-nodos/nodo-2 /root/volumenes/dxspider
+    
       - name: Ficheros Nodo 3
         run: cp -r dxspider-nodos/nodo-3 /root/volumenes/dxspider
 
