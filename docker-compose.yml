@@ -106,7 +106,7 @@ services:
             - "/root/volumenes/dxspider/nodo-3/connect:/spider/connect"
             - "/root/volumenes/dxspider/nodo-3/scripts:/spider/scripts"
             - "/root/volumenes/dxspider/nodo-3/local:/spider/local"
-            # Binds para persistencia de datos comunes a todos los Nodos
+            # Binds para persistencia de datos comunes a todos los Nodos 
             - "/root/volumenes/dxspider/common/filter:/spider/filter/spots"
             # Binds para inyectar configuraciones comunes a todos los nodos
             - "${PWD}/dxspider-nodos/common/contrib/ea3cv:/spider/contrib/ea3cv"
