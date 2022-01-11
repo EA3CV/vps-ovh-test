@@ -9,4 +9,3 @@ bless( {
     }
   }
 }, 'Filter' )
-

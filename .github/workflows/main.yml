@@ -20,7 +20,10 @@ jobs:
 
       - name: Ficheros Nodo 7
         run: cp -r dxspider-nodos/nodo-7 /root/volumenes/dxspider
-      
+
+      - name: Ficheros Common Contrib
+        run: cp -r dxspider-nodos/common /root/volumenes/dxspider
+
       - name: Ficheros DXSpider-Watch
         run: cp -r dxspider-watch /root
       

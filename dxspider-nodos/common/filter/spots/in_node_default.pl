@@ -9,4 +9,3 @@ bless( {
   },
   sort => 'spots'
 }, 'Filter' )
-
