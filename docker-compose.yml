@@ -88,8 +88,8 @@ services:
             # Binds para persistencia de datos comunes a todos los Nodos
             - "/root/volumenes/dxspider/common/filter:/spider/filter/spots"
             # Binds para inyectar configuraciones comunes a todos los nodos
-            - "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-            - "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
+            #- "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
+            #- "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
     ea3cv-3:
         container_name: ea3cv-3
