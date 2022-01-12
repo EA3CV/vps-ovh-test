@@ -8,10 +8,12 @@
 00,10,20,30,40,50 * * * * start_connect('EA4URE-5') unless connected('EA4URE-5')
 00,10,20,30,40,50 * * * * start_connect('F1OYP-6')  unless connected('F1OYP-6')
 05,15,25,35,45,55 * * * * start_connect('F4EYQ-1')  unless connected('F4EYQ-1')
+05,15,25,35,45,55 * * * * start_connect('IK8HJC-6') unless connected('IK8HJC-6')
 05,15,25,35,45,55 * * * * start_connect('IW9EDP-6') unless connected('IW9EDP-6')
-00,10,20,30,40,50 * * * * start_connect('SV5FRI-1') unless connected('SV5FRI-1')
-#00,10,20,30,40,50 * * * * start_connect('N5WLS-2')  unless connected('N5WLS-2')
+00,10,20,30,40,50 * * * * start_connect('N0OJ-7')   unless connected('N0OJ-7')
+00,10,20,30,40,50 * * * * start_connect('N5WLS-2')  unless connected('N5WLS-2')
 00,10,20,30,40,50 * * * * start_connect('N6WS-6')   unless connected('N6WS-6')
+00,10,20,30,40,50 * * * * start_connect('SV5FRI-1') unless connected('SV5FRI-1')
 00,10,20,30,40,50 * * * * start_connect('VE7CC-1')  unless connected('VE7CC-1')
 05,15,25,35,45,55 * * * * start_connect('VE9SC')    unless connected('VE9SC')
 05,15,25,35,45,55 * * * * start_connect('WB3FFV-2') unless connected('WB3FFV-2')
@@ -31,8 +33,8 @@
 #4 0 * 1-12 * spawn("find /spider/local_data/spots -type f -mtime +31 | xargs rm -rf")
 
 # Bot
-#0 0 * 1-12 * spawn('pkill -f "/usr/bin/perl -w /spider/contrib/ea3cv/bot_conn.pl EA3CV-2"')
-#1 0 * 1-12 * spawn("/usr/bin/perl -w /spider/contrib/ea3cv/bot_conn.pl EA3CV-2")
+0 0 * 1-12 * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2"')
+1 0 * 1-12 * spawn("/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2")
 #0 12 * * *   run_cmd("neighbours.pl EA3CV-2")
 #0 00,03,06,09,12,15,18,21 * * *   run_cmd("bot_stad EA3CV-2")
 #0 * * * *   run_cmd("bot_stad EA3CV-2")
@@ -64,7 +66,7 @@
 3 3 * * 0,2,5 run_cmd("load/prefix")
 
 # Anuncios
-0 2 * * * run_cmd('ann FULL DX Spider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
+0 2 * * *  run_cmd('ann FULL DX Spider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
 0 16 * * * run_cmd('ann FULL DXSpider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
 0 12 * * * run_cmd('ann FULL DX Cluster EA3CV-2 dxcluster.cronux.net 7300')
 0 22 * * * run_cmd('ann FULL DX Spider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
