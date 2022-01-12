@@ -72,7 +72,7 @@ services:
     ea3cv-2:
         container_name: ea3cv-2
         restart: unless-stopped
-        image: dxspider:v157r415
+        image: dxspider:v157r416
         ports:
             - "7300:7300"
             - "7301:7301"
@@ -87,7 +87,6 @@ services:
             # Binds para persistencia de datos comunes a todos los Nodos
             - "/root/volumenes/dxspider/common/filter:/spider/filter/spots"
             # Binds para inyectar configuraciones comunes a todos los nodos
-            - "${PWD}/dxspider-nodos/common/contrib/ea3cv:/spider/contrib/ea3cv"
             - "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             - "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
