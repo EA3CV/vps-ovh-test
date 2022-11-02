@@ -1,9 +1,15 @@
 set/var $Spot::maxspots = 100
-# Actual
-set/var $RBN::minspottime = 3
+# Actual  
+# set/var $RBN::minspottime = 3
 # Futuro
-set/var $RBN::respottime = 3
+#set/var $RBN::respottime = 3
+
+#set/var $main::reqreg = 1
+#set/var $main::passwdreq = 1
+
 set/spider AE5E
+set/spider ea2cw-1
+set/spider ea2cw-2
 set/spider EA3CV-3
 set/spider EA4URE-2
 set/spider EA4URE-3
@@ -23,4 +29,18 @@ set/spider SV5FRI-1
 set/spider VE7CC-1
 set/spider VE9SC
 set/spider WB3FFV-2
-set/spider WB3FFV-3
+
+conn SK0MMR
+conn SK1MMR
+conn AE5E
+conn DH1TW-2
+conn EA4URE-5
+conn F4EYQ-1
+conn IW9EDP-6
+conn N0OJ-7
+conn N5WLS-2
+conn N6WS-6
+conn SV5FRI-1
+conn VE7CC-1
+conn VE9SC
+conn WB3FFV-2
