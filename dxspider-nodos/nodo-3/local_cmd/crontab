@@ -20,7 +20,7 @@
 #05,15,25,35,45,55 * * * * start_connect('VE9SC')    unless connected('VE9SC')
 #05,15,25,35,45,55 * * * * start_connect('WB3FFV-2') unless connected('WB3FFV-2')
 
-00,10,20,30,40,50 * * * * start_connect('EA4URE-3') unless connected('EA4URE-3')
+#00,10,20,30,40,50 * * * * start_connect('EA4URE-3') unless connected('EA4URE-3')
 
 * * * * * start_connect('SK0MMR') unless connected('SK0MMR')
 * * * * * start_connect('SK1MMR') unless connected('SK1MMR')
