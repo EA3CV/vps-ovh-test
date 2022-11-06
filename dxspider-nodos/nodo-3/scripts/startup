@@ -1,4 +1,8 @@
 set/var $Spot::maxspots = 100
+
+set/var $main::reqreg = 1
+set/var $main::passwdreq = 0
+
 set/spider AE5E
 set/spider EA3CV-3
 set/spider EA4URE-2
@@ -19,3 +23,6 @@ set/spider SV5FRI-1
 set/spider VE7CC-1
 set/spider VE9SC
 set/spider WB3FFV-2
+
+conn SK0MMR
+conn SK1MMR
