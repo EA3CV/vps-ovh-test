@@ -4,8 +4,8 @@ set/var $Spot::maxspots = 100
 # Futuro
 #set/var $RBN::respottime = 3
 
-#set/var $main::reqreg = 1
-#set/var $main::passwdreq = 1
+set/var $main::reqreg = 1
+set/var $main::passwdreq = 0
 
 set/spider AE5E
 set/spider ea2cw-1
