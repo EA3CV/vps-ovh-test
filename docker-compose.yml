@@ -79,6 +79,7 @@ services:
             - "7302:7302"
         volumes:
             # Binds para persistencia de datos del Nodo 2 
+            - "/root/volumenes/dxspider/nodo-2/msg:/spider/msg"
             - "/root/volumenes/dxspider/nodo-2/local_data:/spider/local_data"
             - "/root/volumenes/dxspider/nodo-2/local_cmd:/spider/local_cmd"
             - "/root/volumenes/dxspider/nodo-2/connect:/spider/connect"
@@ -110,8 +111,8 @@ services:
             # Binds para persistencia de datos comunes a todos los Nodos 
             - "/root/volumenes/dxspider/common/filter:/spider/filter"
             # Binds para inyectar configuraciones comunes a todos los nodos
-            - "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-            - "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
+            #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
+            #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
 #    ea4ure-7:
 #        container_name: ea4ure-7
