@@ -29,7 +29,7 @@
 #0 1 * * * spawn("cd /spider; git reset --hard; git pull")
 
 # Exportar usuarios
-20 0 * * 0,2,5 run_cmd("export_users")
+20 0 * * * run_cmd("export_users")
 
 # Mantener file system
 #0 0 * 1-12 * spawn("/spider/local_data/debug -type f -mtime +31 | xargs rm -rf")
@@ -74,6 +74,18 @@
 #0 16 * * * run_cmd('ann FULL DXSpider EA3CV-2: telnet> ea3cv.duckdns.org 7300 with Quality Filters for RBN')
 #0 12 * * * run_cmd('ann FULL DX Cluster EA3CV-2.  telnet> ea3cv.duckdns.org 7300')
 #0 22 * * * run_cmd('ann FULL DX Spider EA3CV-2 telnet> ea3cv.duckdns.org 7300 with Quality Filters for RBN')
+
+# Estadisticas MQTT JSON
+#* * * * * run_cmd("estadisticas_json")
+
+# Bad spotter
+0 0 * * * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl"')
+1 0 * * * spawn("/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl")
+
+30 * * * * spawn('curl -o /spider/local_data/tor-proxies.txt https://raw.githubusercontent.com/X4BNet/lists_torexit/main/ipv4.txt')
+30 * * * * spawn('curl -o /spider/local_data/proxies-exits.txt https://lists.fissionrelays.net/tor/relays-ipv4.txt')
+31 * * * * spawn('cat /spider/local_data/proxies-exits.txt > /spider/local_data/tor-proxies.txt')
+32 * * * * spawn('sed -i "s|$|/32|" /spider/local_data/tor-proxies.txt')
 
 # Grabar comandos
 #33 * * * * run_cmd('save /tmp/nodos1 , "rcmd wb3ffv-2 sh/c all"')
