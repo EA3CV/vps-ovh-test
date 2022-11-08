@@ -6,10 +6,10 @@
 # Based on Dirk Koopman G1TLH code
 #
 # Modified by EA3CV
-# 20200408 v0.2
+# 20221108 v0.3
 #
 
-use List::MoreUtils 'first_index'; 
+use List::MoreUtils 'first_index';
 use Date::Calc qw(Today_and_Now Delta_YMDHMS Add_Delta_YMDHMS Delta_DHMS Date_to_Text);
 use IO::File;
 use 5.10.1;
@@ -22,57 +22,61 @@ my @out;
 push @out, " ";
 push @out, "List of connected Users:";
 push @out, " ";
-push @out, "Callsign   Type       Connection time";
-push @out, "--------   ---------  ---------------";
+push @out, "Callsign   R Type        Connection time";
+push @out, "--------   - ---------   ---------------";
 
 foreach $dxchan ( sort {$a->call cmp $b->call} DXChannel::get_all ) {
     my $call = $dxchan->call();
-	my $t = cldatetime($dxchan->startt);
-	my $type = $dxchan->is_node ? "NODE" : "USER";
-	my $sort = "    ";
-	if ($dxchan->is_node) {
-		$sort = "DXSP" if $dxchan->is_spider;
-		$sort = "CLX " if $dxchan->is_clx;
-		$sort = "DXNT" if $dxchan->is_dxnet;
-		$sort = "AR-C" if $dxchan->is_arcluster;
-		$sort = "AK1A" if $dxchan->is_ak1a;
-	} else {
-		$sort = "LOCL" if $dxchan->conn->isa('IntMsg');
-		$sort = "WEB " if $dxchan->is_web;
-		$sort = "EXT " if $dxchan->conn->isa('ExtMsg');
-	}
-	my $name = $dxchan->user->name || " ";
-	my $ping = $dxchan->is_node && $dxchan != $main::me ? sprintf("%5.2f", $dxchan->pingave) : "     ";
-	my $conn = $dxchan->conn;
-	my $ip = '';
-	if ($conn) {
-		$ip = $dxchan->hostname;
-		$ip = "AGW Port ($conn->{agwport})" if exists $conn->{agwport};
-	}
+        my $t = cldatetime($dxchan->startt);
+        my $type = $dxchan->is_node ? "NODE" : "USER";
+        my $sort = "    ";
+        if ($dxchan->is_node) {
+                $sort = "DXSP" if $dxchan->is_spider;
+                $sort = "CLX " if $dxchan->is_clx;
+                $sort = "DXNT" if $dxchan->is_dxnet;
+                $sort = "AR-C" if $dxchan->is_arcluster;
+                $sort = "AK1A" if $dxchan->is_ak1a;
+        } else {
+                $sort = "LOCL" if $dxchan->conn->isa('IntMsg');
+                $sort = "WEB " if $dxchan->is_web;
+                $sort = "EXT " if $dxchan->conn->isa('ExtMsg');
+        }
+        my $name = $dxchan->user->name || " ";
+        my $ping = $dxchan->is_node && $dxchan != $main::me ? sprintf("%5.2f", $dxchan->pingave) : "     ";
+        my $conn = $dxchan->conn;
+        my $ip = '';
+        if ($conn) {
+                $ip = $dxchan->hostname;
+                $ip = "AGW Port ($conn->{agwport})" if exists $conn->{agwport};
+        }
 
-	my @lista_meses = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+        my @lista_meses = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
 
-	my $hora = substr($t,12,2);
-	my $min = substr($t,14,2);
-	my $tt = substr($t,0,11);
-	my ($dia, $mes, $ano) = split('-', $tt);
-	my $i_mes = first_index { /$mes/ } @lista_meses;
-	$i_mes++;
-	my $today = [Today_and_Now()];
-	my $target = [$ano,$i_mes,$dia,$hora,$min,0];
+        my $hora = substr($t,12,2);
+        my $min = substr($t,14,2);
+        my $tt = substr($t,0,11);
+        my ($dia, $mes, $ano) = split('-', $tt);
+        my $i_mes = first_index { /$mes/ } @lista_meses;
+        $i_mes++;
+        my $today = [Today_and_Now()];
+        my $target = [$ano,$i_mes,$dia,$hora,$min,0];
 
-	my $sign = "until";
-	my $delta = Normalize_Delta_YMDHMS($today,$target);
-	if ($delta->[0] < 0){
-	    $sign = "since";
-	    $delta = Normalize_Delta_YMDHMS($target,$today);
-	}
-	my $time_on = sprintf(
-	    "%2d d %3d h %3d m", $delta->[2], $delta->[3], $delta->[4]);
+        my $sign = "until";
+        my $delta = Normalize_Delta_YMDHMS($today,$target);
+        if ($delta->[0] < 0){
+            $sign = "since";
+            $delta = Normalize_Delta_YMDHMS($target,$today);
+        }
+        my $time_on = sprintf(
+            "%2d d %3d h %3d m", $delta->[2], $delta->[3], $delta->[4]);
 
         if ($type eq "USER") {
-                push @out, sprintf "%-10s $type $sort $time_on", $call;
-	}
+                my $isreg = " ";
+                if ($dxchan->isregistered) {
+                        $isreg = "R";
+                }
+                push @out, sprintf "%-10s %s $type $sort  $time_on", $call, $isreg;
+        }
 }
 
 my $cmd1;
@@ -105,8 +109,8 @@ my $uptime = main::uptime();
 push @out, " ";
 push @out, "  Users:  $all_users";
 push @out, "  Uptime: $uptime";
-push @out, "  Load:   $total1 %";
-push @out, "  Mem:    $total2 %";
+#push @out, "  Load:   $total1 %";
+#push @out, "  Mem:    $total2 %";
 push @out, " ";
 
 
