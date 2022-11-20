@@ -43,7 +43,7 @@ $myemail = "ea3cv\@cronux.net";
 @my_cc = qw();
 
 # are we debugging ?
-@debug = qw(chan connect cron msg progress state);
+@debug = qw(chan connect cron msg progress state badword);
 
 # are we doing xml?
 $do_xml = 0;

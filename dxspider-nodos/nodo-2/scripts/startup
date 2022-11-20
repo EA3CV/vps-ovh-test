@@ -4,6 +4,8 @@ set/var $Spot::maxspots = 100
 # Futuro
 #set/var $RBN::respottime = 3
 
+set/var $DXCommandmode::maxbadcount = 0
+
 set/var $main::reqreg = 1
 set/var $main::passwdreq = 0
 
