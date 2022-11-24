@@ -25,7 +25,7 @@
 #0 1 * * * spawn("cd /spider; git reset --hard; git pull")
 
 # Exportar usuarios
-20 0 * * 0,2,5 run_cmd("export_users")
+20 0 * * * run_cmd("export_users")
 
 # Mantener file system
 #0 0 * 1-12 * spawn("/spider/local_data/debug -type f -mtime +31 | xargs rm -rf")
@@ -66,10 +66,14 @@
 3 3 * * 0,2,5 run_cmd("load/prefix")
 
 # Anuncios
-0 2 * * *  run_cmd('ann FULL DX Spider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
-0 16 * * * run_cmd('ann FULL DXSpider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
-0 12 * * * run_cmd('ann FULL DX Cluster EA3CV-2 dxcluster.cronux.net 7300')
-0 22 * * * run_cmd('ann FULL DX Spider EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN')
+0 1 * * *  run_cmd('ann FULL For the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 4 * * *  run_cmd('ann FULL In the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 7 * * *  run_cmd('ann FULL In the next CQ WW CW take advantage of: EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
+0 10 * * * run_cmd('EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
+0 13 * * * run_cmd('ann FULL For the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 16 * * * run_cmd('ann FULL In the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 19 * * * run_cmd('ann FULL In the next CQ WW CW take advantage of: EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
+0 22 * * * run_cmd('EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
 
 # Grabar comandos
 #33 * * * * run_cmd('save /tmp/nodos1 , "rcmd wb3ffv-2 sh/c all"')
