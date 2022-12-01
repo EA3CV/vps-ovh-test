@@ -66,14 +66,14 @@
 3 3 * * 0,2,5 run_cmd("load/prefix")
 
 # Anuncios
-0 1 * * *  run_cmd('ann FULL For the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
-0 4 * * *  run_cmd('ann FULL In the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
-0 7 * * *  run_cmd('ann FULL In the next CQ WW CW take advantage of: EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
-0 10 * * * run_cmd('EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
-0 13 * * * run_cmd('ann FULL For the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
-0 16 * * * run_cmd('ann FULL In the next CQ WW CW use: EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
-0 19 * * * run_cmd('ann FULL In the next CQ WW CW take advantage of: EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
-0 22 * * * run_cmd('EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
+0 1 * * *  run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
+#0 4 * * *  run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 7 * * *  run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
+0 10 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
+#0 13 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 with Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 16 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
+0 19 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
+#0 22 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
 
 # Grabar comandos
 #33 * * * * run_cmd('save /tmp/nodos1 , "rcmd wb3ffv-2 sh/c all"')
