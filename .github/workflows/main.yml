@@ -11,7 +11,10 @@ jobs:
 
   copy:
     runs-on: self-hosted
+
     steps:
+      - uses: actions/checkout@v2
+
       - name: Ficheros Nodo 2
         run: cp -r dxspider-nodos/nodo-2 /root/volumenes/dxspider
     
@@ -36,10 +39,13 @@ jobs:
       - name: Hacer ejecutable los entrypoint
         run: chmod +x /root/dxspider-watch/on-demand/entrypoint.sh
 
-  build:
+  #build:
+  deploy:
     runs-on: self-hosted
+
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy
+
+      - name: Deploy de contenedores DXSpider
         run: sudo docker-compose up -d
         
