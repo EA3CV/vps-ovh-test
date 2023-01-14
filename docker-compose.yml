@@ -110,7 +110,7 @@ services:
             - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
             # Binds para persistencia de datos comunes a todos los Nodos 
             - "/root/volumenes/dxspider/common/filter:/spider/filter"
-            # Binds para inyectar configuraciones comunes a todos los nodos
+            # Binds para inyectar configuraciones comunes a todos los nodos 
             #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
