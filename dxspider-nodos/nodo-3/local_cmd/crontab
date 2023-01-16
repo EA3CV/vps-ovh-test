@@ -9,7 +9,7 @@
 
 # Autoarranque de las conexiones con los nodos
 #00,10,20,30,40,50 * * * * start_connect('AE5E')     unless connected('AE5E')
-00,10,20,30,40,50 * * * * start_connect('EA4URE-6') unless connected('EA4URE-6')
+#00,10,20,30,40,50 * * * * start_connect('EA4URE-6') unless connected('EA4URE-6')
 #00,10,20,30,40,50 * * * * start_connect('F1OYP-6')  unless connected('F1OYP-6')
 #05,15,25,35,45,55 * * * * start_connect('F4EYQ-1')  unless connected('F4EYQ-1')
 #05,15,25,35,45,55 * * * * start_connect('IW9EDP-6') unless connected('IW9EDP-6')
@@ -79,13 +79,20 @@
 #* * * * * run_cmd("estadisticas_json")
 
 # Bad spotter
-0 0 * * * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl"')
-1 0 * * * spawn("/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl")
+#0 0 * * * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl"')
+#1 0 * * * spawn("/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl")
 
-30 * * * * spawn('curl -o /spider/local_data/tor-proxies.txt https://raw.githubusercontent.com/X4BNet/lists_torexit/main/ipv4.txt')
-30 * * * * spawn('curl -o /spider/local_data/proxies-exits.txt https://lists.fissionrelays.net/tor/relays-ipv4.txt')
-31 * * * * spawn('cat /spider/local_data/proxies-exits.txt > /spider/local_data/tor-proxies.txt')
-32 * * * * spawn('sed -i "s|$|/32|" /spider/local_data/tor-proxies.txt')
+#30 * * * * spawn('curl -o /spider/local_data/tor-proxies.txt https://raw.githubusercontent.com/X4BNet/lists_torexit/main/ipv4.txt')
+#30 * * * * spawn('curl -o /spider/local_data/proxies-exits.txt https://lists.fissionrelays.net/tor/relays-ipv4.txt')
+#31 * * * * spawn('cat /spider/local_data/proxies-exits.txt > /spider/local_data/tor-proxies.txt')
+#32 * * * * spawn('sed -i "s|$|/32|" /spider/local_data/tor-proxies.txt')
+
+# TOR & Others
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torexit')
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torrelay')
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.global')
+31 * * * * run_cmd('load/badip')
+
 
 # Grabar comandos
 #33 * * * * run_cmd('save /tmp/nodos1 , "rcmd wb3ffv-2 sh/c all"')
