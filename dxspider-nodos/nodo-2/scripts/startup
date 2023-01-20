@@ -6,6 +6,9 @@ set/var $Spot::maxspots = 100
 
 set/var $DXCommandmode::maxbadcount = 0
 
+set/var $main::localhost_alias_ipv4 = "149.202.47.39"
+set/var @main::localhost_names qw(127.0.0.1 ::1 172.0.33.1 172.17.0.1 172.18.0.2)
+
 set/var $main::reqreg = 1
 set/var $main::passwdreq = 0
 
