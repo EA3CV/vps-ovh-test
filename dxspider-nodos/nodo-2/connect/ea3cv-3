@@ -1,0 +1,5 @@
+timeout 15
+connect telnet localhost 7303
+'login: ' 'EA3CV-2'
+'assword:' 'notelodire'
+client EA3CV-3 telnet

@@ -43,7 +43,7 @@ $myemail = "ea3cv\@cronux.net";
 @my_cc = qw();
 
 # are we debugging ?
-@debug = qw(chan connect cron msg progress state badword);
+@debug = qw(chan connect cron msg progress state);
 
 # are we doing xml?
 $do_xml = 0;
@@ -52,5 +52,9 @@ $do_xml = 0;
 #$dsn = "dbi:SQLite:dbname=$root/data/dxspider.db";
 #$dbuser = "";
 #$dbpass = "";
+
+# Telegram Bot
+$id = "1089814914";
+$token = "1376233105:AAHOfU_M97j1gXm1l4xLPpmF_v6CYCxIL3M";
 
 1;

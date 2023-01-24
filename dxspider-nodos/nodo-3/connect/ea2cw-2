@@ -1,0 +1,4 @@
+timeout 15
+connect telnet cluster.gautxori.com 7373
+'login: ' 'EA3CV-3'
+client EA2CW-2 telnet

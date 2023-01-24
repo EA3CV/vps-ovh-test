@@ -82,11 +82,6 @@
 #0 0 * * * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl"')
 #1 0 * * * spawn("/usr/bin/perl -w /spider/local_cmd/bad_spotter.pl")
 
-#30 * * * * spawn('curl -o /spider/local_data/tor-proxies.txt https://raw.githubusercontent.com/X4BNet/lists_torexit/main/ipv4.txt')
-#30 * * * * spawn('curl -o /spider/local_data/proxies-exits.txt https://lists.fissionrelays.net/tor/relays-ipv4.txt')
-#31 * * * * spawn('cat /spider/local_data/proxies-exits.txt > /spider/local_data/tor-proxies.txt')
-#32 * * * * spawn('sed -i "s|$|/32|" /spider/local_data/tor-proxies.txt')
-
 # TOR & Others
 30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torexit')
 30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torrelay')

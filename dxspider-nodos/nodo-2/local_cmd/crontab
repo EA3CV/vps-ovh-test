@@ -33,8 +33,8 @@
 #4 0 * 1-12 * spawn("find /spider/local_data/spots -type f -mtime +31 | xargs rm -rf")
 
 # Bot
-0 0 * 1-12 * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2"')
-1 0 * 1-12 * spawn("/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2")
+#0 0 * 1-12 * spawn('pkill -f "/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2"')
+#1 0 * 1-12 * spawn("/usr/bin/perl -w /spider/local_cmd/bot_conn.pl EA3CV-2")
 #0 12 * * *   run_cmd("neighbours.pl EA3CV-2")
 0 00-23 * * *   run_cmd("bot_stad EA3CV-2")
 #0 * * * *   run_cmd("bot_stad EA3CV-2")
@@ -74,6 +74,12 @@
 0 16 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 Q Filters RBN. https://www.qrz.com/db/EA3CV')
 0 19 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300. https://www.qrz.com/db/EA3CV')
 #0 22 * * * run_cmd('ann FULL EA3CV-2 dxcluster.cronux.net 7300 with Quality Filters for RBN. https://www.qrz.com/db/EA3CV')
+
+# TOR & Others
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torexit')
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.torrelay')
+30 * * * * spawn('cd /spider/local_data; wget -qN http://www.dxspider.net/download/badip.global')
+31 * * * * run_cmd('load/badip')
 
 # Grabar comandos
 #33 * * * * run_cmd('save /tmp/nodos1 , "rcmd wb3ffv-2 sh/c all"')

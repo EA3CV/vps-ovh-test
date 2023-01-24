@@ -7,6 +7,9 @@ set/var $main::localhost_alias_ipv4 = "149.202.47.39"
 set/var @main::localhost_names qw(127.0.0.1 ::1 172.0.33.1 172.17.0.1 172.18.0.3)
 
 set/spider AE5E
+set/spider EA2CW-2
+set/spider EA2CW-3
+set/spider EA2CW-5
 set/spider EA3CV-2
 set/spider EA4URE-2
 set/spider EA4URE-3

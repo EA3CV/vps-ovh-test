@@ -1,4 +1,4 @@
 timeout 15
-connect telnet localhost 7327
+connect telnet ea4ure.com 7327
 'login: ' 'EA3CV-3'
 client EA4URE-7 telnet

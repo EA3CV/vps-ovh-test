@@ -53,4 +53,8 @@ $do_xml = 0;
 #$dbuser = "";
 #$dbpass = "";
 
+# Telegram Bot
+$id = "1089814914";
+$token = "1376233105:AAHOfU_M97j1gXm1l4xLPpmF_v6CYCxIL3M";
+
 1;
