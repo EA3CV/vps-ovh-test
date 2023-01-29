@@ -39,7 +39,7 @@ RUN apk update && \
     cpanm --no-wget Curses Date::Manip && \
     cpanm EV Mojolicious JSON JSON::XS Data::Structure::Util && \
     cpanm Math::Round List::MoreUtils Date::Calc && \
-    cpanm Net::MQTT::Simple && \
+    cpanm Net::MQTT::Simple Net::CIDR::Lite && \
     adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
     git clone git://scm.dxcluster.org/scm/spider -b mojo /spider &&  \
     cd /spider && \
