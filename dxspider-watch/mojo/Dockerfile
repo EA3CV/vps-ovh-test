@@ -4,7 +4,7 @@
 #   Docker personalizado para la versión 1.57 (rama mojo) y para EA4URE-2
 #
 #   Adapted for DXSpider 1.57 installation
-#   20200615  v1.2
+#   20230131  v1.3
 #
 #   Copyright 2018 Kristijan Conkas
 #
@@ -26,6 +26,7 @@ FROM alpine:3.12
 ENV SPIDER_USERNAME=${SPIDER_USERNAME:-sysop} SPIDER_UID=${SPIDER_UID:-1000}
 
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 RUN apk update && \
     apk add --update --no-cache git musl-dev \
