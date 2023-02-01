@@ -4,7 +4,7 @@
 #   Docker personalizado para la versión 1.57 (rama mojo) y para EA4URE-2
 #
 #   Adapted for DXSpider 1.57 installation
-#   20230131  v1.3
+#   20230201  v1.4
 #
 #   Copyright 2018 Kristijan Conkas
 #
@@ -41,7 +41,7 @@ RUN apk update && \
     cpanm EV Mojolicious JSON JSON::XS Data::Structure::Util && \
     cpanm Math::Round List::MoreUtils Date::Calc && \
     cpanm Net::MQTT::Simple Net::CIDR::Lite && \
-    adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
+yaml    adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
     git clone git://scm.dxcluster.org/scm/spider -b mojo /spider &&  \
     cd /spider && \
 
