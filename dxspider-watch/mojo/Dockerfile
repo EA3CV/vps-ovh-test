@@ -41,7 +41,8 @@ RUN apk update && \
     cpanm EV Mojolicious JSON JSON::XS Data::Structure::Util && \
     cpanm Math::Round List::MoreUtils Date::Calc && \
     cpanm Net::MQTT::Simple Net::CIDR::Lite && \
-yaml    adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
+    cpanm File::Copy::Recursive && \
+    adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
     git clone git://scm.dxcluster.org/scm/spider -b mojo /spider &&  \
     cd /spider && \
 

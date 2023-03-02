@@ -41,6 +41,7 @@ RUN apk update && \
     cpanm Math::Round List::MoreUtils Date::Calc && \
     cpanm Net::MQTT::Simple Net::CIDR::Lite && \
     cpanm File::Copy::Recursive && \
+    cpanm File::Copy::Recursive && \
     adduser -D -u $SPIDER_UID -h /spider $SPIDER_USERNAME && \
     git clone git://scm.dxcluster.org/scm/spider -b mojo /spider &&  \
     cd /spider && \
