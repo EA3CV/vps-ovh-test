@@ -1,0 +1,4 @@
+timeout 15
+connect telnet cluster.n2wq.com  7373
+'login: ' 'EA3CV-3'
+client N2WQ-1 telnet
