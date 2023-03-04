@@ -1,4 +1,4 @@
 timeout 15
 connect telnet ea4ure.com 7325
 'login: ' 'EA3CV-2'
-client EA4URE-6 telnet
+'assword:' 'v54jKD0w'

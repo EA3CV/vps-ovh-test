@@ -1,5 +1,4 @@
 timeout 15
 connect telnet cluster.n0oj.net 7300
 'login: ' 'EA3CV-2'
-client N0OJ-7 telnet
-
+'assword:' 'vUfs7bZ1'

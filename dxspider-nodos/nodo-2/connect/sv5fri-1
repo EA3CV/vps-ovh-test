@@ -1,4 +1,4 @@
 timeout 15
 connect telnet dxc.sv5fri.eu 7300
 'login: ' 'EA3CV-2'
-client SV5FRI-1 telnet
+'assword:' 'nT52pU38'

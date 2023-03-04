@@ -1,4 +1,4 @@
 timeout 15
 connect telnet 44.31.117.28 7303
 'login: ' 'EA3CV-3'
-client EA2CW-3 telnet
+'assword:' '9BjGtF4E'

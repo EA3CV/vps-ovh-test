@@ -1,4 +1,4 @@
 timeout 15
 connect telnet iw9edp.ddns.net 7300
 'login: ' 'EA3CV-2'
-client IW9EDP-6 telnet
+'assword:' 'XIs632d1'

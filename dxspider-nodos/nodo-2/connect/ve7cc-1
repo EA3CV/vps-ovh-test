@@ -1,4 +1,4 @@
 timeout 15
 connect telnet ve7cc.net 7373
 'login: ' 'EA3CV-2'
-client VE7CC-1 telnet
+'assword:' '3Shn9sW4'

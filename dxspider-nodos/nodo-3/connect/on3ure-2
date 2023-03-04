@@ -1,4 +1,4 @@
 timeout 15
 connect telnet dxspider.on3ure.be 7300
 'login: ' 'EA3CV-3'
-client ON3URE-2 telnet
+'assword:' '4jhgHGt5'

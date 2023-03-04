@@ -1,4 +1,3 @@
 timeout 15
 connect telnet f1oyp.no-ip.org 7400
 'login: ' 'EA3CV-2'
-client F1OYP-6 telnet

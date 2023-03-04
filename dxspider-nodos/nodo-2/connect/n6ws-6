@@ -1,4 +1,4 @@
 timeout 15
 connect telnet n6ws.ddns.net 7300
 'login: ' 'EA3CV-2'
-client N6WS-6 telnet
+'assword:' 'g4hS94eD'

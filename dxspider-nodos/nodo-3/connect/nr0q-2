@@ -1,4 +1,4 @@
 timeout 15
-connect telnet cluster.gautxori.com 7305
+connect telnet marconi.mchambersradio.com 7300
 'login: ' 'EA3CV-3'
-client EA2CW-5 telnet
+'assword:' 'very591dx4'
