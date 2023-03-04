@@ -1,4 +1,0 @@
-timeout 15
-connect telnet ve9sc.com 6300
-'login: ' 'EA3CV-2'
-client VE9SC telnet

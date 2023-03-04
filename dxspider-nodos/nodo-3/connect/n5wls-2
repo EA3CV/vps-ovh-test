@@ -1,4 +1,0 @@
-timeout 15
-connect telnet dxc2.n5wls.net 7300
-'login: ' 'EA3CV-2'
-client N5WLS-2 telnet
