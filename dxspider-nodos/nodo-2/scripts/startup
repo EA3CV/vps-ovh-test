@@ -21,7 +21,6 @@ set/spider EA4URE-3
 set/spider EA4URE-5
 set/spider EA4URE-6
 set/spider EA4URE-7
-set/spider F1OYP-6
 set/spider F4EYQ-1
 set/spider IK8HJC-6
 set/spider IW9EDP-6
@@ -38,7 +37,7 @@ set/spider WB3FFV-2
 conn SK0MMR
 conn SK1MMR
 conn AE5E
-conn DH1TW-2
+#conn DH1TW-2
 conn EA4URE-5
 conn F4EYQ-1
 conn IW9EDP-6

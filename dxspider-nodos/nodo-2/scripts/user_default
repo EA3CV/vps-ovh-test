@@ -6,7 +6,7 @@
 blank =
 sh/wwv 1
 blank =
-#unset/skimmer_default
+
 set/nobeep
 # Para el node_default
 # rej/spot node_default input 9 info db info wpm info cq not origin sk1mmr
