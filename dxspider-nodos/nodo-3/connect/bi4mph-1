@@ -1,4 +1,4 @@
 timeout 15
-connect telnet localhost 7300
+connect telnet bi4mph.f3322.net 7373
 'login: ' 'EA3CV-3'
-'assword' 'notelodire'
+'assword' 'xiao2Mei'
