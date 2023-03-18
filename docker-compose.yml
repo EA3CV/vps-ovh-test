@@ -72,7 +72,7 @@ services:
     ea3cv-2:
         container_name: ea3cv-2
         restart: unless-stopped
-        image: dxspider:v157r505
+        image: dxspider:v157r519
         ports:
             - "7300:7300"
             - "7301:7301"
@@ -95,7 +95,7 @@ services:
     ea3cv-3:
         container_name: ea3cv-3
         restart: unless-stopped
-        image: dxspider:v157r506
+        image: dxspider:v157r519
         ports:
             - "7303:7300"
             - "7313:7301"
@@ -117,7 +117,7 @@ services:
 #    ea4ure-7:
 #        container_name: ea4ure-7
 #        restart: unless-stopped
-#        image: dxspider:v157r400
+#        image: dxspider:v157r519
 #        ports:
 #            - "7307:7300"
 #            - "7317:7301"

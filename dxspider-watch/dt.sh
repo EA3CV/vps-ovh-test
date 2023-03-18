@@ -13,6 +13,8 @@ GITVERSION=$(git describe --long | cut -d'-' -f2)
 
 echo 'Versión en repositorio: '$GITVERSION | ts '[%Y-%m-%d %H:%M:%S]'
 
+git remote update
+
 UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")

@@ -19,7 +19,7 @@ return 1 unless $self->priv >= 5;
 
 my $tnow = time();
 my $all_nodes = 0;
-my @out = (" ", " List of Connected Users:", " ", " Callsign  R P  Type       Connection Time",
+my @out = (" ", " List of Connected Nodes:", " ", " Callsign  R P  Type       Connection Time",
            " --------  - -  ---------  ---------------");
 
 foreach my $dxchan ( sort {$a->call cmp $b->call} DXChannel::get_all ) {
