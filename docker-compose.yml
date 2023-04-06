@@ -114,27 +114,27 @@ services:
             #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
-#    ea4ure-7:
-#        container_name: ea4ure-7
-#        restart: unless-stopped
-#        image: dxspider:v157r519
-#        ports:
-#            - "7307:7300"
-#            - "7317:7301"
-#            - "7327:7302"
-#        volumes:
+    ea4ure-7:
+        container_name: ea4ure-7
+        restart: unless-stopped
+        image: dxspider:v157r524a
+        ports:
+            - "7307:7300"
+            - "7317:7301"
+            - "7327:7302"
+        volumes:
 #            # Binds para persistencia de datos del Nodo 7  
-#            - "/root/volumenes/dxspider/nodo-7/local_data:/spider/local_data"
-#            - "/root/volumenes/dxspider/nodo-7/local_cmd:/spider/local_cmd"
-#            - "/root/volumenes/dxspider/nodo-7/connect:/spider/connect"
-#            - "/root/volumenes/dxspider/nodo-7/scripts:/spider/scripts"
-#            - "/root/volumenes/dxspider/nodo-7/local:/spider/local"
-#            # Binds para persistencia de datos comunes a todos los Nodos
-#            - "/root/volumenes/dxspider/common/filter:/spider/filter/spots"
-#            # Binds para inyectar configuraciones comunes a todos los nodos
-#            - "${PWD}/dxspider-nodos/common/contrib/ea3cv:/spider/contrib/ea3cv"
-#            - "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-#            - "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
+            - "/root/volumenes/dxspider/nodo-7/local_data:/spider/local_data"
+            - "/root/volumenes/dxspider/nodo-7/local_cmd:/spider/local_cmd"
+            - "/root/volumenes/dxspider/nodo-7/connect:/spider/connect"
+            - "/root/volumenes/dxspider/nodo-7/scripts:/spider/scripts"
+            - "/root/volumenes/dxspider/nodo-7/local:/spider/local"
+            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
+            # Binds para persistencia de datos comunes a todos los Nodos 
+            - "/root/volumenes/dxspider/common/filter:/spider/filter"
+            # Binds para inyectar configuraciones comunes a todos los nodos 
+            #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
+            #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
 volumes:
     pihole-etc:
