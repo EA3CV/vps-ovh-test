@@ -114,8 +114,8 @@ services:
             #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
-    ea4ure-7:
-        container_name: ea4ure-7
+    ea3ure-7:
+        container_name: ea3ure-7
         restart: unless-stopped
         image: dxspider:v157r524a
         ports:
