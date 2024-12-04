@@ -136,6 +136,44 @@ services:
             #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
 
+    ea3cv-8:
+        container_name: ea3cv-8
+        restart: unless-stopped
+        image: dxspider:v157r547
+        ports:
+            - "7308:7300"
+            - "7318:7301"
+            - "7328:7302"
+        volumes:
+            # Binds para persistencia de datos del Nodo 8
+            - "/root/volumenes/dxspider/nodo-8/local_data:/spider/local_data"
+            - "/root/volumenes/dxspider/nodo-8/local_cmd:/spider/local_cmd"
+            - "/root/volumenes/dxspider/nodo-8/connect:/spider/connect"
+            - "/root/volumenes/dxspider/nodo-8/scripts:/spider/scripts"
+            - "/root/volumenes/dxspider/nodo-8/local:/spider/local"
+            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
+            # Binds para persistencia de datos comunes a todos los Nodos
+            - "/root/volumenes/dxspider/common/filter:/spider/filter"
+
+    ea3cv-9:
+        container_name: ea3cv-9
+        restart: unless-stopped
+        image: dxspider:v157r547
+        ports:
+            - "7309:7300"
+            - "7319:7301"
+            - "7329:7302"
+        volumes:
+            # Binds para persistencia de datos del Nodo 9
+            - "/root/volumenes/dxspider/nodo-9/local_data:/spider/local_data"
+            - "/root/volumenes/dxspider/nodo-9/local_cmd:/spider/local_cmd"
+            - "/root/volumenes/dxspider/nodo-9/connect:/spider/connect"
+            - "/root/volumenes/dxspider/nodo-9/scripts:/spider/scripts"
+            - "/root/volumenes/dxspider/nodo-9/local:/spider/local"
+            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
+            # Binds para persistencia de datos comunes a todos los Nodos
+            - "/root/volumenes/dxspider/common/filter:/spider/filter"
+
 volumes:
     pihole-etc:
     pihole-dnsmasq:
