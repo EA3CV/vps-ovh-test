@@ -1,5 +1,5 @@
 
-#####00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('N4VFF-2') unless connected('N4VFF-2')
+00,05,10,15,20,25,30,35,40,45,50,55 * * * * start_connect('VK5GR-2') unless connected('VK5GR-2 ')
 
 # Mantener file system
 0 0 * 1-12 * spawn("/spider/local_data/debug -type f -mtime +31 | xargs rm -rf")

@@ -1,2 +1,3 @@
 set/var $Spot::maxspots = 100
-####set/spider N4VFF-2
+
+set/spider VK5GR-2
