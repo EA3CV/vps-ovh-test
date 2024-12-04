@@ -1,0 +1,3 @@
+set/var $Spot::maxspots = 100
+set/login
+unset/beep
