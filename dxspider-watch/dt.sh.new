@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# Kin 20250408 - Detecta cambios reales por hash, mantiene VERSION=614
+
+set -euo pipefail
+
+# Ruta a la versión actual guardada
+source /root/dxspider-watch/157.ver
+
+# Directorio del repositorio
+cd /root/dxspider-watch/spider
+
+echo "[INFO] Última versión instalada: $VERSION" | ts '[%Y-%m-%d %H:%M:%S]'
+
+# Asegurar limpieza del estado local
+git reset --hard HEAD &>/dev/null
+
+# Cambiar siempre a la rama correcta
+git checkout mojo &>/dev/null
+
+# Forzar actualización de la referencia remota
+git fetch origin mojo:refs/remotes/origin/mojo &>/dev/null
+
+# Obtener hashes local y remoto
+LOCAL=$(git rev-parse HEAD)
+REMOTE=$(git rev-parse origin/mojo)
+
+echo "[INFO] Commit local:  $LOCAL" | ts '[%Y-%m-%d %H:%M:%S]'
+echo "[INFO] Commit remoto: $REMOTE" | ts '[%Y-%m-%d %H:%M:%S]'
+
+# Comprobar si ya aplicamos este commit
+HASHFILE="/root/dxspider-watch/157.hash"
+if [[ -f "$HASHFILE" ]]; then
+    LAST_HASH=$(cat "$HASHFILE")
+else
+    LAST_HASH=""
+fi
+
+# Si el commit remoto ya ha sido procesado, salimos
+if [[ "$REMOTE" == "$LAST_HASH" ]]; then
+    echo "[SKIP] Commit remoto ya aplicado anteriormente, aunque el build siga en $VERSION" | ts '[%Y-%m-%d %H:%M:%S]'
+    exit 0
+fi
+
+# Detectamos nueva versión, aplicar cambio
+echo "[UPDATE] Se detectó nueva versión en origin/mojo." | ts '[%Y-%m-%d %H:%M:%S]'
+
+# Sincronizar código con remoto
+git reset --hard origin/mojo | ts '[%Y-%m-%d %H:%M:%S]'
+
+# Obtener versión completa
+if git describe --long &>/dev/null; then
+    GITVERSION_FULL=$(git describe --long)
+else
+    echo "[ERROR] No se pudo obtener versión con git describe" | ts '[%Y-%m-%d %H:%M:%S]'
+    exit 1
+fi
+
+# Extraer información de versión
+TAG=$(echo "$GITVERSION_FULL" | cut -d'-' -f1)        # v1.57
+BUILD=$(echo "$GITVERSION_FULL" | cut -d'-' -f2)      # 614
+TAG_CLEAN=$(echo "$TAG" | sed 's/v//;s/\.//')         # 157
+DOCKERTAG="v${TAG_CLEAN}r${BUILD}"                    # v157r614
+
+echo "[INFO] Nueva versión detectada: $GITVERSION_FULL" | ts '[%Y-%m-%d %H:%M:%S]'
+
+# Enviar aviso por Telegram
+ID="@dxspider"
+TOKEN="7860131478:AAFnmeVKmyDJqFmR3zk51h5Z3UvLsk2zhM"
+PAYLOAD="*Mojo*   🆕  *UPDATE build $BUILD*"
+
+URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+curl -s -X POST "$URL" -d chat_id="$ID" -d text="$PAYLOAD" -d parse_mode="Markdown"
+
+ Construcción Docker (comentada para pruebas)
+ cd /root/dxspider-watch/mojo
+ docker build --no-cache -t dxspider:$DOCKERTAG .
+
+# Guardar commit hash actual y versión de build
+echo "$REMOTE" > /root/dxspider-watch/157.hash
+echo "VERSION=${BUILD}" > /root/dxspider-watch/157.ver
+
+echo "[DONE] Imagen dxspider:$DOCKERTAG registrada como versión actual." | ts '[%Y-%m-%d %H:%M:%S]'
