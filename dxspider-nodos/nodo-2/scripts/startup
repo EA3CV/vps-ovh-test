@@ -6,13 +6,15 @@ set/var $Spot::maxspots = 100
 
 set/var $DXCommandmode::maxbadcount = 0
 
+set/var $DXM::msgs{en}{e28} = 'Sorry, you need to be registered (use the "msg_sysop" command to register)'
+set/var $DXM::msgs{es}{e28} = 'Lo siento, necesitas registrarte (usa el comando "msg_sysop" para registro)'
+
 set/var $main::localhost_alias_ipv4 = "149.202.47.39"
 set/var @main::localhost_names qw(127.0.0.1 ::1 172.0.33.1 172.17.0.1 172.18.0.2)
 
 set/var $main::reqreg = 1
 set/var $main::passwdreq = 0
 
-set/spider AE5E
 set/spider ea2cw-1
 set/spider ea2cw-2
 set/spider EA3CV-3
@@ -36,7 +38,6 @@ set/spider WB3FFV-2
 
 conn SK0MMR
 conn SK1MMR
-conn AE5E
 #conn DH1TW-2
 conn EA4URE-5
 conn F4EYQ-1
@@ -45,6 +46,6 @@ conn N0OJ-7
 conn N5WLS-2
 conn N6WS-6
 conn SV5FRI-1
-conn VE7CC-1
+#conn VE7CC-1
 conn VE9SC
 conn WB3FFV-2
