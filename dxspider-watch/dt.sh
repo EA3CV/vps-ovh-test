@@ -30,7 +30,7 @@ elif [ $LOCAL != $REMOTE ]; then
     GITVERSION=$(git describe --long | cut -d'-' -f2)
 
     ID="@dxspider"
-    TOKEN="6292704148:AAEGOkldo8bG5H-AHckFvHBNLIk1JAXFbZU"
+    TOKEN="1376233105:AAHOfU_M97j1gXm1l4xLPpmF_v6CYCxIL3M"
     PAYLOAD="*Mojo*   🆕  *UPDATE build $GITVERSION*"
 
     URL="https://api.telegram.org/bot$TOKEN/sendMessage"
