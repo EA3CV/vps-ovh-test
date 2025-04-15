@@ -57,4 +57,12 @@ $do_xml = 0;
 $id = "1089814914";
 $token = "1376233105:AAHOfU_M97j1gXm1l4xLPpmF_v6CYCxIL3M";
 
+# Email SMTP config
+$email_enable = 1;
+$email_from = 'ea3cv@cronux.net';
+$email_smtp = 'smtp.migadu.com';
+$email_port = 587;      # Port 587 for STARTTLS/Port 465 for SSL)
+$email_user = 'ea3cv@cronux.net';
+$email_pass = 'Gauss314.$';
+
 1;
