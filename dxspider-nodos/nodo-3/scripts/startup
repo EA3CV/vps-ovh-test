@@ -1,5 +1,8 @@
 set/var $Spot::maxspots = 100
 
+set/var $DXM::msgs{en}{e28} = 'Sorry, you need to be registered (use the "msg_sysop" command to register)'
+set/var $DXM::msgs{es}{e28} = 'Lo siento, necesitas registrarte (usa el comando "msg_sysop" para registro)'
+
 set/var $main::reqreg = 1
 set/var $main::passwdreq = 0
 
