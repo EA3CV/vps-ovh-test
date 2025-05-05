@@ -4,7 +4,7 @@ services:
         image: portainer/portainer-ce
         networks:
             vpn-net:
-                ipv4_address: 172.0.32.2
+                ipv4_address: 172.31.0.2
         container_name: portainer
         ports:
             - "9000:9000/tcp"
@@ -20,7 +20,7 @@ services:
         hostname: pihole-ovh
         networks:
             vpn-net:
-                ipv4_address: 172.0.32.3
+                ipv4_address: 172.31.0.3
         dns:
             - 213.186.33.99
         ports:
@@ -41,13 +41,13 @@ services:
         image: ghcr.io/linuxserver/wireguard
         networks:
             vpn-net:
-                ipv4_address: 172.0.32.4
+                ipv4_address: 172.31.0.4
         container_name: wireguard
         cap_add:
             - NET_ADMIN
             - SYS_MODULE
         dns:
-            - 172.0.32.3
+            - 172.31.0.3
         environment:
             - PUID=1000
             - PGID=1000
@@ -186,4 +186,4 @@ networks:
         driver: bridge
         ipam:
             config:
-                - subnet: 172.0.32.0/24
+                - subnet: 172.31.0.0/24
