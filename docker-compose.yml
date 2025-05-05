@@ -191,3 +191,4 @@ volumes:
 networks:
   vpn-net:
     external: true
+    name: vps-ovh_vpn-net
