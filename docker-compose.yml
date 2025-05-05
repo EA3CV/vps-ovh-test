@@ -4,7 +4,7 @@ services:
         image: portainer/portainer-ce
         networks:
             dxspider_net:
-                ipv4_address: 172.50.0.4
+                ipv4_address: 172.60.0.4
         container_name: portainer
         ports:
             - "9000:9000/tcp"
@@ -20,7 +20,7 @@ services:
         hostname: pihole-ovh
         networks:
             dxspider_net:
-                ipv4_address: 172.50.0.5
+                ipv4_address: 172.60.0.5
         dns:
             - 213.186.33.99
         ports:
@@ -41,13 +41,13 @@ services:
         image: ghcr.io/linuxserver/wireguard
         networks:
             dxspider_net:
-                ipv4_address: 172.50.0.6
+                ipv4_address: 172.60.0.6
         container_name: wireguard
         cap_add:
             - NET_ADMIN
             - SYS_MODULE
         dns:
-            - 172.50.0.5
+            - 172.60.0.5
         environment:
             - PUID=1000
             - PGID=1000
@@ -74,7 +74,7 @@ services:
         image: dxspider:v157r633
         networks:
           dxspider_net:
-            ipv4_address: 172.50.0.2
+            ipv4_address: 172.60.0.2
         ports:
             - "7300:7300"
             - "7301:7301"
@@ -100,7 +100,7 @@ services:
         image: dxspider:v157r633
         networks:
           dxspider_net:
-            ipv4_address: 172.50.0.3
+            ipv4_address: 172.60.0.3
         ports:
             - "7303:7300"
             - "7313:7301"
@@ -125,7 +125,7 @@ services:
         image: dxspider:v157r633
         networks:
           dxspider_net:
-            ipv4_address: 172.50.0.7
+            ipv4_address: 172.60.0.7
         ports:
             - "7307:7300"
             - "7317:7301"
@@ -150,7 +150,7 @@ services:
         image: dxspider:v157r633
         networks:
           dxspider_net:
-            ipv4_address: 172.50.0.8
+            ipv4_address: 172.60.0.8
         ports:
             - "7308:7300"
             - "7318:7301"
@@ -173,7 +173,7 @@ services:
         image: dxspider:v157r633
         networks:
           dxspider_net:
-            ipv4_address: 172.50.0.9
+            ipv4_address: 172.60.0.9
         ports:
             - "7309:7300"
             - "7319:7301"
@@ -202,4 +202,4 @@ networks:
     ipam:
       driver: default
       config:
-          - subnet: 172.50.0.0/24
+          - subnet: 172.60.0.0/24
