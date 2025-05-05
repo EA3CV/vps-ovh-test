@@ -181,9 +181,13 @@ volumes:
     portainer:
     wireguard:
 
+#networks:
+#    vpn-net:
+#        driver: bridge
+#        ipam:
+#            config:
+#                - subnet: 172.30.0.0/24
+
 networks:
-    vpn-net:
-        driver: bridge
-        ipam:
-            config:
-                - subnet: 172.30.0.0/24
+  vpn-net:
+    external: true
