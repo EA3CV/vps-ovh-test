@@ -1,14 +1,11 @@
-
 name: CI Servicios OVH
 
 on:
   push:
     branches: [ main ]
-
   workflow_dispatch:
 
 jobs:
-
   copy:
     runs-on: self-hosted
 
@@ -17,7 +14,7 @@ jobs:
 
       - name: Ficheros Nodo 2
         run: cp -r dxspider-nodos/nodo-2 /root/volumenes/dxspider
-    
+
       - name: Ficheros Nodo 3
         run: cp -r dxspider-nodos/nodo-3 /root/volumenes/dxspider
 
@@ -35,23 +32,21 @@ jobs:
 
       - name: Ficheros DXSpider-Watch
         run: cp -r dxspider-watch /root
-      
+
       - name: Hacer ejecutable el Script
         run: chmod +x /root/dxspider-watch/dt.sh
 
-      - name: Hacer ejecutable los entrypoint
+      - name: Hacer ejecutable los entrypoint (mojo)
         run: chmod +x /root/dxspider-watch/mojo/entrypoint.sh
 
-      - name: Hacer ejecutable los entrypoint
+      - name: Hacer ejecutable los entrypoint (on-demand)
         run: chmod +x /root/dxspider-watch/on-demand/entrypoint.sh
 
-  #build:
   deploy:
     runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy de contenedores DXSpider
-        run: sudo docker-compose up -d
-        
+      - name: Deploy de contenedores DXSpider con Compose V2
+        run: docker compose -f /root/actions-runner/_work/vps-ovh/vps-ovh/docker-compose.yml -p dxspider up -d 
