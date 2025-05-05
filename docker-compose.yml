@@ -3,7 +3,7 @@ services:
     portainer:
         image: portainer/portainer-ce
         networks:
-            vpn-net:
+            vps-ovh_vpn-net:
                 ipv4_address: 172.30.0.2
         container_name: portainer
         ports:
@@ -19,7 +19,7 @@ services:
         image: pihole/pihole:latest
         hostname: pihole-ovh
         networks:
-            vpn-net:
+            vps-ovh_vpn-net:
                 ipv4_address: 172.30.0.3
         dns:
             - 213.186.33.99
@@ -40,7 +40,7 @@ services:
     wireguard:
         image: ghcr.io/linuxserver/wireguard
         networks:
-            vpn-net:
+            vps-ovh_vpn-net:
                 ipv4_address: 172.30.0.4
         container_name: wireguard
         cap_add:
@@ -182,7 +182,7 @@ volumes:
     wireguard:
 
 networks:
-  dxspider_vpn-net:
+  vps-ovh_vpn-net:
     driver: bridge
     ipam:
       driver: default
