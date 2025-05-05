@@ -181,14 +181,9 @@ volumes:
     portainer:
     wireguard:
 
-#networks:
-#    vpn-net:
-#        driver: bridge
-#        ipam:
-#            config:
-#                - subnet: 172.30.0.0/24
-
 networks:
-  vpn-net:
-    external: true
-    name: vps-ovh_vpn-net
+    vpn-net:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.30.0.0/24
