@@ -72,9 +72,6 @@ services:
         container_name: ea3cv-2
         restart: unless-stopped
         image: dxspider:v157r633
-        networks:
-          dxspider_net:
-            ipv4_address: 172.60.0.2
         ports:
             - "7300:7300"
             - "7301:7301"
@@ -98,9 +95,6 @@ services:
         container_name: ea3cv-3
         restart: unless-stopped
         image: dxspider:v157r633
-        networks:
-          dxspider_net:
-            ipv4_address: 172.60.0.3
         ports:
             - "7303:7300"
             - "7313:7301"
@@ -123,9 +117,6 @@ services:
         container_name: ea3cv-7
 #        restart: unless-stopped
         image: dxspider:v157r633
-        networks:
-          dxspider_net:
-            ipv4_address: 172.60.0.7
         ports:
             - "7307:7300"
             - "7317:7301"
@@ -148,9 +139,6 @@ services:
         container_name: ea3cv-8
 #        restart: unless-stopped
         image: dxspider:v157r633
-        networks:
-          dxspider_net:
-            ipv4_address: 172.60.0.8
         ports:
             - "7308:7300"
             - "7318:7301"
@@ -171,9 +159,6 @@ services:
         container_name: ea3cv-9
 #        restart: unless-stopped
         image: dxspider:v157r633
-        networks:
-          dxspider_net:
-            ipv4_address: 172.60.0.9
         ports:
             - "7309:7300"
             - "7319:7301"
