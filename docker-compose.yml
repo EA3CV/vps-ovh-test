@@ -182,8 +182,9 @@ volumes:
     wireguard:
 
 networks:
-    vpn-net:
-        driver: bridge
-        ipam:
-            config:
-                - subnet: 172.30.0.0/24
+  dxspider_vpn-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+          - subnet: 172.30.0.0/24
