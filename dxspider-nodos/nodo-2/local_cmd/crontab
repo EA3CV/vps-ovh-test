@@ -4,7 +4,6 @@
 # Do not use & on the end of "spawn" or "spawn_cmd" as the commands are already in background. You don't need to background them again (and you may not get what you want).
 
 # Autoarranque de las conexiones con los nodos
-00,10,20,30,40,50 * * * * start_connect('AE5E')     unless connected('AE5E')
 00,10,20,30,40,50 * * * * start_connect('EA4URE-5') unless connected('EA4URE-5')
 00,10,20,30,40,50 * * * * start_connect('F1OYP-6')  unless connected('F1OYP-6')
 05,15,25,35,45,55 * * * * start_connect('F4EYQ-1')  unless connected('F4EYQ-1')
