@@ -1,4 +1,4 @@
 timeout 15
-connect telnet localhost 7303
-'login: ' 'EA3CV-2'
-'assword:' 'notelodire'
+connect telnet dxcluster.cronux.net 7303
+'login: ' 'EA3CV-7'
+'password:' 'notelodire'
