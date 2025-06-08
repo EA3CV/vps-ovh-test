@@ -1,31 +1,14 @@
  
-           Bienvenido EA3CV-2 DXSpider Cluster en España
-          Welcome to the EA3CV-2 DXSpider Cluster in Spain
+                Bienvenido EA3CV-2 DXSpider Cluster en España
+               Welcome to the EA3CV-2 DXSpider Cluster in Spain
 
-+-------------------------------------------------------------------+
-!                                                                   !
-!      A este sistema solo pueden acceder los radioaficionados      !
-!             Por favor, inicie sesion con su indicativo            !
-!                                                                   !
-!         This system may only be accessed by Radio Amateurs        !
-!                 Please login with your callsign                   !
-!                                                                   !
-+-------------------------------------------------------------------+
-
-+-------------------------------------------------------------------+
-!                                                                   !
-!          New command for RBN spots with quality filter:           !
-!                                                                   !
-!               set/skimmer        set/wantrbn                      !
-!               unset/skimmer      unset/wantrbn                    !
-!                                                                   !
-!         Type: help rbn                                            !
-!          and: help set/skimmer                                    !
-!                                                                   !
-!       Note: By default the skimmers spots are disconnected        !
-!                                                                   !
-+-------------------------------------------------------------------+ 
 +-----------------------------------------------------------------------------+
-|    Si necesitas contactar con el sysop envia un email a ea3cv@cronux.net    |
-|   If you need to contact the sysop please send email to ea3cv@cronux.net    |
+            A este sistema solo pueden acceder los radioaficionados      
+                   Por favor, inicie sesion con su indicativo            
+
+               This system may only be accessed by Radio Amateurs        
+                       Please login with your callsign                   
++-----------------------------------------------------------------------------+
+     Si necesitas contactar con el sysop envia un email a ea3cv@cronux.net    
+    If you need to contact the sysop please send email to ea3cv@cronux.net     
 +-----------------------------------------------------------------------------+
