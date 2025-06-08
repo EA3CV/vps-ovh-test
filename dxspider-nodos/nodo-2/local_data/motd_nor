@@ -1,19 +1,9 @@
 +-----------------------------------------------------------------------------+
-|    Si necesitas contactar con el sysop envia un email a ea3cv@cronux.net    |
-|   If you need to contact the sysop please send email to ea3cv@cronux.net    |
-+-----------------------------------------------------------------------------+
-+-----------------------------------------------------------------------------+
-| Si deseas tener acceso total, por favor, envia un email a: ea3cv@cronux.net |
-|                       Incluye los siguientes datos:                         |
-|                                                                             |
-|             Asunto: Peticion de registro para <TU INDICATIVO>               |
-|             Tu INDICATIVO, NOMBRE y EMAIL                                   |
-+-----------------------------------------------------------------------------+
-+-----------------------------------------------------------------------------+
-|                   If you would like to have full access,                    |
-|                  please send an email to: ea3cv@cronux.net                  |
-|                    Please include the following details:                    |
-|                                                                             |
-|             Subject: Registration request for <YOUR CALLSIGN>               |
-|             Your CALLSIGN, NAME and EMAIL                                   |
+      Si desea tener acceso completo, utilice el comando 'msg_sysop'
+                para solicitar el registro en este nodo.  
+              msg_sysop <CALL> REGISTER <EMAIL> <MESSAGE>
+
+      If you wish to have full access, please use the command 'msg_sysop'
+                 to request registration on this node.  
+              msg_sysop <CALL> REGISTER <EMAIL> <MESSAGE>
 +-----------------------------------------------------------------------------+
