@@ -1,0 +1,4 @@
+
+# No versionar datos locales DXSpider
+dxspider-nodos/**/local_data/
+
