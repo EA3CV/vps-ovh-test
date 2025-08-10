@@ -1,4 +1,0 @@
-timeout 15
-connect telnet telnet.reversebeacon.net 7000
-'call:' 'EA4URE-7'
-client SK0MMR telnet

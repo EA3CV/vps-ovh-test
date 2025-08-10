@@ -1,4 +1,0 @@
-timeout 15
-connect telnet bi4mph.f3322.net 7373
-'login: ' 'EA3CV-3'
-'assword' 'xiao2Mei'

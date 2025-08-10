@@ -1,4 +1,0 @@
-timeout 15
-connect telnet dxcluster.hb9vqq.ch 7300
-'login: ' 'EA3CV-3'
-'assword:' 'v3ryd1ff1cult'

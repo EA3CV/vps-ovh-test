@@ -1,3 +1,0 @@
-bless( {
-  name => 'badword',
-}, 'DXHash' )

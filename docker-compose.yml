@@ -1,185 +1,27 @@
 services:
 
-    portainer:
-        image: portainer/portainer-ce
-        networks:
-            dxspider_net:
-                ipv4_address: 172.60.0.4
-        container_name: portainer
-        ports:
-            - "9000:9000/tcp"
-            - "8000:8000/tcp"
-        volumes:
-            - '/var/run/docker.sock:/var/run/docker.sock'
-            - 'portainer:/data'
-        restart: always
-
-    pihole:
-        container_name: pihole
-        image: pihole/pihole:latest
-        hostname: pihole-ovh
-        networks:
-            dxspider_net:
-                ipv4_address: 172.60.0.5
-        dns:
-            - 213.186.33.99
-        ports:
-            - "53:53/tcp"
-            - "53:53/udp"
-            - "67:67/udp"
-            - "80:80/tcp"
-        environment:
-            TZ: 'Europe/Madrid'
-            WEBPASSWORD: 'euripid3s.'
-            PIHOLE_DNS_: '213.186.33.99'
-        volumes:
-            - 'pihole-etc:/etc/pihole/'
-            - 'pihole-dnsmasq:/etc/dnsmasq.d/'
-        restart: always
-
-    wireguard:
-        image: ghcr.io/linuxserver/wireguard
-        networks:
-            dxspider_net:
-                ipv4_address: 172.60.0.6
-        container_name: wireguard
-        cap_add:
-            - NET_ADMIN
-            - SYS_MODULE
-        dns:
-            - 172.60.0.5
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=Europe/Madrid
-            - SERVERURL=149.202.47.39
-            - SERVERPORT=51820
-            - PEERS=pc,movil,ipad,mac
-            - PEERDNS=auto
-            - INTERNAL_SUBNET=10.13.13.0
-            - ALLOWEDIPS=0.0.0.0/0
-        volumes:
-            - '/root/volumenes/wireguard/config:/config'
-            - '/lib/modules:/lib/modules'
-
-        ports:
-            - "51820:51820/udp"
-        sysctls:
-            - net.ipv4.conf.all.src_valid_mark=1
-        restart: always
-
-    ea3cv-2:
-        container_name: ea3cv-2
+    ea3cv-4:
+        container_name: ea3cv-4
         restart: unless-stopped
-        image: dxspider:v157r633
+        image: dxspider:v157r633-test
         ports:
-            - "7300:7300"
-            - "7301:7301"
-            - "7302:7302"
+            - "7304:7300"
+            - "7304:7301"
+            - "7304:7302"
         volumes:
-            # Binds para persistencia de datos del Nodo 2  
-            - "/root/volumenes/dxspider/nodo-2/msg:/spider/msg"
-            - "/root/volumenes/dxspider/nodo-2/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-2/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-2/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-2/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-2/local:/spider/local"
+            # Binds para persistencia de datos del Nodo 4  
+            - "/root/volumenes/dxspider/nodo-4/msg:/spider/msg"
+            - "/root/volumenes/dxspider/nodo-4/local_data:/spider/local_data"
+            - "/root/volumenes/dxspider/nodo-4/local_cmd:/spider/local_cmd"
+            - "/root/volumenes/dxspider/nodo-4/connect:/spider/connect"
+            - "/root/volumenes/dxspider/nodo-4/scripts:/spider/scripts"
+            - "/root/volumenes/dxspider/nodo-4/local:/spider/local"
             - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
             # Binds para persistencia de datos comunes a todos los Nodos
             - "/root/volumenes/dxspider/common/filter:/spider/filter"
             # Binds para inyectar configuraciones comunes a todos los nodos
             #- "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
             #- "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
-
-    ea3cv-3:
-        container_name: ea3cv-3
-        restart: unless-stopped
-        image: dxspider:v157r633
-        ports:
-            - "7303:7300"
-            - "7313:7301"
-            - "7323:7302"
-        volumes:
-            # Binds para persistencia de datos del Nodo 3   
-            - "/root/volumenes/dxspider/nodo-3/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-3/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-3/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-3/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-3/local:/spider/local"
-            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
-            # Binds para persistencia de datos comunes a todos los Nodos 
-            - "/root/volumenes/dxspider/common/filter:/spider/filter"
-            # Binds para inyectar configuraciones comunes a todos los nodos 
-            #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-            #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
-
-    ea3cv-7:
-        container_name: ea3cv-7
-#        restart: unless-stopped
-        image: dxspider:v157r633
-        ports:
-            - "7307:7300"
-            - "7317:7301"
-            - "7327:7302"
-        volumes:
-#            # Binds para persistencia de datos del Nodo 7  
-            - "/root/volumenes/dxspider/nodo-7/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-7/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-7/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-7/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-7/local:/spider/local"
-            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
-            # Binds para persistencia de datos comunes a todos los Nodos 
-            - "/root/volumenes/dxspider/common/filter:/spider/filter"
-            # Binds para inyectar configuraciones comunes a todos los nodos 
-            #- "./dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-            #- "./dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
-
-    ea3cv-8:
-        container_name: ea3cv-8
-#        restart: unless-stopped
-        image: dxspider:v157r633
-        ports:
-            - "7308:7300"
-            - "7318:7301"
-            - "7328:7302"
-        volumes:
-            # Binds para persistencia de datos del Nodo 8
-            - "/root/volumenes/dxspider/nodo-8/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-8/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-8/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-8/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-8/local:/spider/local"
-            - "/root/volumenes/dxspider/nodo-8/cmd_import:/spider/cmd_import"
-            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
-            # Binds para persistencia de datos comunes a todos los Nodos
-            - "/root/volumenes/dxspider/common/filter:/spider/filter"
-
-    ea3cv-9:
-        container_name: ea3cv-9
-#        restart: unless-stopped
-        image: dxspider:v157r633
-        ports:
-            - "7309:7300"
-            - "7319:7301"
-            - "7329:7302"
-        volumes:
-            # Binds para persistencia de datos del Nodo 9
-            - "/root/volumenes/dxspider/nodo-9/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-9/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-9/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-9/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-9/local:/spider/local"
-            - "/root/volumenes/dxspider/nodo-9/cmd_import:/spider/cmd_import"
-            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
-            # Binds para persistencia de datos comunes a todos los Nodos
-            - "/root/volumenes/dxspider/common/filter:/spider/filter"
-
-volumes:
-    pihole-etc:
-    pihole-dnsmasq:
-    portainer:
-    wireguard:
 
 networks:
   dxspider_net:

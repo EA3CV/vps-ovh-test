@@ -1,4 +1,0 @@
-timeout 15
-connect telnet marconi.mchambersradio.com 7300
-'login: ' 'EA3CV-3'
-'assword:' 'very591dx4'

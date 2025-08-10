@@ -1,3 +1,0 @@
-timeout 15
-connect telnet dx.harwood.com 8000
-'login: ' 'EA3CV-8'

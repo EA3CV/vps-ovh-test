@@ -1,0 +1,5 @@
+bless( {
+  'EA0XYZ'     => 1752066167,
+  'EA7IXM'     => 1752066237,
+  name => 'badspotter'
+} , 'DXHash' )

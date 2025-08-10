@@ -1,0 +1,13 @@
+#
+# standard user default script
+#
+#blank =
+#sh/dx 5
+blank =
+sh/wwv 1
+blank =
+
+set/nobeep
+# Para el node_default
+# rej/spot node_default input 9 info db info wpm info cq not origin sk1mmr
+# rej/spot node_default 9 info db info wpm info cq
