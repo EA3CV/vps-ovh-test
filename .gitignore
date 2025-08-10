@@ -2,3 +2,10 @@
 # No versionar datos locales DXSpider
 dxspider-nodos/**/local_data/
 
+
+# --- TEST ONLY: no versionar datos locales DXSpider ni runtime ---
+dxspider-nodos/**/local_data/
+*.log
+*.tmp
+*.bak
+*.swp
