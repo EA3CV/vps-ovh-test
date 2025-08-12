@@ -274,25 +274,7 @@ sub log_msg
                         $texto = "*$node*   ⬇️  Cluster *DOWN*";
                         telegram($texto);
                 }
-
-        # SP Messages
-        } elsif ($fields[1] =~ /Message no/) {
-                my @text = split(/ /, $fields[1]);
-                if ($text[11] eq $main::myalias) {
-                        my $file = sprintf ('m%06d', $text[6]);
-                        my $msg_file = "/spider/msg/".$file;
-                        my $msg = do{local(@ARGV,$/)=$msg_file;<>};
-
-                        my @head = split(/\^/, $msg);
-                        my $num  = "Msg: *$text[6]*\n";
-                        my $from = "From: *$head[2]*\n";
-                        my $subj = "Subj: *$head[5]*";
-                        $msg =~ s/^===.+?===//s;
-                        $msg = "*$main::mycall*   🆕  $num" . $from . $subj . $msg;
-                        telegram($msg);
-                }
         }
-
         return 0;
 }
 
