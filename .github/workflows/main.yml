@@ -7,34 +7,43 @@ on:
 
 jobs:
   copy:
-    runs-on: self-hosted
-
+    runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v2
 
-      - name: Ficheros Nodo 4
-        run: cp -r dxspider-nodos/nodo-4 /root/volumenes/dxspider
+      - name: Preparar carpetas de volúmenes
+        run: |
+          mkdir -p /root/volumenes/dxspider/nodo-4/{connect,local,local_cmd,local_data,scripts}
+          mkdir -p /root/volumenes/dxspider/common/{contrib,filter}
 
-      - name: Ficheros Common Contrib
-        run: cp -r dxspider-nodos/common /root/volumenes/dxspider
+      - name: Copiar CONNECT
+        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/connect/ /root/volumenes/dxspider/nodo-4/connect/
 
-      - name: Ficheros DXSpider-Watch
-        run: cp -r dxspider-watch /root
+      - name: Copiar LOCAL
+        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local/ /root/volumenes/dxspider/nodo-4/local/
 
-      - name: Hacer ejecutable el Script
-        run: chmod +x /root/dxspider-watch/dt.sh
+      - name: Copiar LOCAL_CMD
+        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local_cmd/ /root/volumenes/dxspider/nodo-4/local_cmd/
 
-      - name: Hacer ejecutable los entrypoint (mojo)
-        run: chmod +x /root/dxspider-watch/mojo/entrypoint.sh
+      - name: Copiar LOCAL_DATA
+        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local_data/ /root/volumenes/dxspider/nodo-4/local_data/
 
-      - name: Hacer ejecutable los entrypoint (on-demand)
-        run: chmod +x /root/dxspider-watch/on-demand/entrypoint.sh
+      - name: Copiar SCRIPTS
+        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/scripts/ /root/volumenes/dxspider/nodo-4/scripts/
+
+      - name: (Opcional) Copiar COMMON
+        run: |
+          [ -d /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/contrib ] && rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/contrib/ /root/volumenes/dxspider/common/contrib/
+          [ -d /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/filter  ] && rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/filter/  /root/volumenes/dxspider/common/filter/
+
+      - name: Permisos uid 1000 (sysop)
+        run: chown -R 1000:1000 /root/volumenes/dxspider
 
   deploy:
     runs-on: self-hosted
-
+    needs: copy
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy de contenedores DXSpider con Compose V2
-        run: docker compose -f /root/actions-runner/_work/vps-ovh/vps-ovh/docker-compose.yml -p dxspider up -d 
+      - name: Deploy con Docker Compose V2
+        run: docker compose -f /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/docker-compose.yml -p dxspider up -d
