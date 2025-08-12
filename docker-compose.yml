@@ -69,7 +69,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.60.0.0/24
+        - subnet: 172.60.1.0/24
 
 volumes:
   redis-data:
