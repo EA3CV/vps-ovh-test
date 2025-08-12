@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #
 # by Kin EA3CV
@@ -6,11 +6,14 @@
 # DXSpider entrypoint
 #
 
-#mkdir /spider/cmd_import
-rm /spider/local_data/cluster.lck
-cd /spider/local_cmd
-#./update_sysop.pl
-./update_new_sysop.pl
+set -euo pipefail
+
+mkdir -p /spider/cmd_import
+rm -f /spider/local_data/cluster.lck || true
 
 cd /spider/perl
-./cluster.pl &
+./update_sysop.pl
+
+exec ./cluster.pl
+
+

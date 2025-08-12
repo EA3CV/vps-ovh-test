@@ -10,6 +10,8 @@ ENV LANG=es_ES.UTF-8
 ENV LC_ALL=es_ES.UTF-8
 
 COPY entrypoint.sh /entrypoint.sh
+# Quitar CRLF y hacer ejecutable
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 RUN apk update && \
     apk add --no-cache \
