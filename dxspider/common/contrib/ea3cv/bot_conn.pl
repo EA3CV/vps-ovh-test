@@ -1,0 +1,86 @@
+#!/usr/bin/perl
+
+#
+# Bot that sends the connection/disconnection of users and nodes
+# via Telegram
+#
+# Usage: bot_conn.pl <server>
+# eg     bot_conn.pl EA3CV-2
+#
+# Created by Kin EA3CV
+# ea3cv@cronux.net
+#
+# v1.3a
+# 20201125
+#
+
+use strict;
+use warnings;
+use 5.10.1;
+use Time::Piece;
+
+$ENV{TZ} = "UTC";
+
+my $server = $ARGV[0];
+
+my $time = Time::Piece->new;
+my $m = $time->mon();
+$m = sprintf("%02d", $m);
+my $y = $time->year("");
+
+my $log = "/spider/local_data/log/$y/$m.dat";
+
+open my $data, "-|", "/usr/bin/tail", "-n1", "-f", $log or die "could not start tail on $log: $!";
+
+while (my $line = <$data>) {
+	next unless ($line =~ /connected/);
+
+	# 1590336672^DXCommand^EC3BH connected from 213.4.177.78
+	# 1590336759^DXCommand^EC3BH disconnected
+	# 1590337177^DXProt^IW9EDP-6 Disconnected
+	# 1590337500^DXProt^IW9EDP-6 connected from 151.54.254.233
+	# 1606290021^^OE3GCU has too many connections (3) at HA6DX,VE7CC-1,N6WS-6 - disconnected
+
+	my @campos = split("\\^", $line);
+	$campos[2] =~ m/(\w+||\w+\-\d+)\s(\w+)/;
+
+#	if ($2 eq "connected") { 
+#		telegram($server,"<-----", "$1 Connect");
+#	} elsif ($2 eq "disconnected") {
+#		telegram($server,"--//--", "$1 Disconnect");
+#       } elsif ($2 eq "Disconnected") {
+#               telegram($server,"--//--", "$1 Disconnect \(N\)");
+#	}
+
+	# Users
+        if ($campos[1] eq "DXCommand") {
+	        if ($2 eq "connected") {
+        	        telegram($server,"<----", "$1 Connect \(U\)");
+	        } elsif ($2 eq "disconnected") {
+        	        telegram($server,"--X--", "$1 Disconnect \(U\)");
+	        }
+	# Nodes
+	} elsif ($campos[1] eq "DXProt") {
+                if ($2 eq "connected") {
+                        telegram($server,"<----", "$1 Connect \(N\)");
+                } elsif ($2 eq "Disconnected") {
+                        telegram($server,"--X--", "$1 Disconnect \(N\)");
+                }
+	# Has too many connections
+        } elsif ($campos[1] eq "" and $2 eq "has too many connections") {
+                        telegram($server,"--X--", "$1 Many connections");
+        }
+}
+
+close $data;
+
+sub telegram {
+        my $srv = shift;
+        my $type = shift;
+        my $state = shift;
+
+	my $token = "1376233105:AAHOfU_M97j1gXm1l4xLPpmF_v6CYCxIL3M";
+	my $id = "1089814914";
+	my $url = "https://api.telegram.org/bot$token/sendMessage";
+	`curl -s -X POST $url -d chat_id=$id -d text="$srv $type $state\n"`;
+}

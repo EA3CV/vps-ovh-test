@@ -1,4 +1,0 @@
-bless( {
-  'EA7IXM'     => 1752066146,
-  name => 'baddx'
-} , 'DXHash' )

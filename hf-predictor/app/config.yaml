@@ -1,0 +1,42 @@
+redis:
+  host: redis
+  port: 6379
+  cache_expire: 900  # en segundos
+
+rbn:
+  cw:
+    enabled: false
+    host: telnet.reversebeacon.net
+    port: 7000
+    username: EA3CV-98
+    ttl_minutes: 10
+
+  digi:
+    enabled: false
+    host: telnet.reversebeacon.net
+    port: 7001
+    username: EA3CV-99
+    ttl_minutes: 10
+
+human_spot:
+  enabled: true      # Habilita el almacenamiento en Redis de spots humanos
+  ttl_minutes: 10    # Tiempo que duran los spots humanos en Redis
+  log_predictions: true  # Habilita log en /data/hf_predictions.log desde DXSpider
+
+# Índices solares/geomagnéticos desde Redis ---
+spacewx:
+  source: "redis"               # usar Redis como fuente
+  redis_key: "spacewx:latest"   # clave donde tu script escribe el JSON {f107,kp,ap,...}
+  max_age_hours: 6              # considerar "fresco" si < 6 h
+
+  # Conversión F10.7 -> SSN para ITURHFProp (ajustable sin tocar código)
+  f107_to_ssn:
+    a: 1.61
+    b: 67.0
+
+  # Ajuste opcional por Kp sobre la fiabilidad (BCR) tras la ejecución
+  reliability_adjust:
+    enabled: true    # pon a false si no quieres degradar por Kp
+    slope: 0.07      # caída por cada punto de Kp por encima de kp0
+    kp0: 3           # umbral a partir del cual empieza a penalizar
+    min: 0.10        # no bajar de 10% de la fiabilidad original

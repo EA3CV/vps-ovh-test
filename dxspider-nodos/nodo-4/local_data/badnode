@@ -1,4 +1,0 @@
-bless( {
-  'EA0AAA'     => 1752066314,
-  name => 'badnode'
-} , 'DXHash' )

@@ -1,0 +1,112 @@
+#!/usr/bin/perl
+
+# 
+# RBN Filter / Server
+# See http://fkurz.net/ham/stuff.html?rbnfilter
+# By Fabian Kurz, DJ1YFK
+# fabian@fkurz.net
+# 2012-10-30
+#
+# Modify by EA3CV 
+# ea3cv@cronux.net
+# v4.2
+# 2020-01-16
+#
+# Code is in the public domain.
+#
+
+use strict;
+use 5.10.1;
+use Net::Telnet ();
+use Date::Format;
+use Time::Local;
+use Text::Trim;
+use Getopt::Long 'HelpMessage';
+
+
+GetOptions(
+  'server=s' => \my $telnet_srv,
+  'port=i'   => \my $port_srv,
+  'user=s'   => \my $telnet_user,
+  'help'     =>   sub { HelpMessage(0) },
+) or HelpMessage(1);
+
+HelpMessage(1) unless ($telnet_srv && $port_srv && $telnet_user);
+
+
+my ($t, @output);
+
+$t = new Net::Telnet (Timeout  => 10, Port => $port_srv);
+$t->open($telnet_srv);
+$t->waitfor('/call: $/i');
+$t->print($telnet_user);
+$t->prompt('/rbn-gw>/');
+$t->errmode("return");
+
+my $line;
+my @meses = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+my @orig_node;
+
+# Obtenemos el callsign del nodo origen
+while ($orig_node[0] ne uc($telnet_user)) {
+        $line = $t->getline(Timeout => 10000);
+	@orig_node = split(" ", $line);
+}
+
+say "###### RBN-GW Connected to $telnet_srv:$port_srv ######";
+
+
+while (1) {
+
+	$line = $t->getline(Timeout => 10000);
+	if (!$line) {
+		say "RBN feed died!";
+		exit;
+	}
+
+	chop($line);
+	$line = $line."\r\n";
+
+	# Omite la linea si no hay DX
+	next unless ($line =~ /^DX/);
+
+        my @campos = split(" ", $line);
+
+        my $spotter = $campos[2];
+        $spotter =~ s/-\#://;
+
+        my $freq = $campos[3];
+        my $dxcall = $campos[4];
+
+        my $a = $campos[4];
+        my $b = $campos[-1];
+        my $comment = $1 if $line =~ m/$a.\s*(.*?)\s*$b/s;
+
+        my $timez = $campos[-1];
+
+        my ($seg, $min, $hora, $mday, $mes, $year, $wday, $yday, $isdst) = gmtime();
+        $year = ($year+1900);
+        my $fecha = "$mday-$meses[$mes]-$year";
+
+#	my $tag2 = "RBN";
+
+        # Formato PC11^DXfreq^DXcall^date^time^comment-txt^user-rprt^origin-node^hops^~
+	# The number of hops is set to "1" so that it does not spread beyond the receiving node
+#       say "PC11\^$freq\^$dxcall\^$fecha\^$timez\^$comment $tag2\^$spotter\^$orig_node[2]\^H01\^\~";
+        say "PC11\^$freq\^$dxcall\^$fecha\^$timez\^$comment\^$spotter\^$orig_node[2]\^H01\^\~";
+        $| = 1;
+#	say $line;
+}
+
+=head1 NAME
+
+rbnspots.pl - Gateway between a RBN server and rbnserver
+
+=head1 SYNOPSIS
+
+  --server,-s     RBN server name
+  --port,-p       RBN telnet server port
+  --user,-u       User who connects to the RBN
+  --help,-h       Print this help
+
+=head1 VERSION

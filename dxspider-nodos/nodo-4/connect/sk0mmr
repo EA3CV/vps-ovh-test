@@ -1,3 +1,0 @@
-timeout 15
-connect telnet telnet.reversebeacon.net 7000
-'call:' 'EA3CV-4'

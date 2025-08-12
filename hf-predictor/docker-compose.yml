@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: hf-redis
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis-data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"         # tamaño máximo por fichero
+        max-file: "3"           # número de rotaciones
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hf-api
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./data/iturhf/bin/ITURHFProp:/usr/bin/ITURHFProp:ro
+      - ./data/iturhf/lib/libp372.so:/usr/lib/libp372.so:ro
+      - ./data/iturhf/lib/libp533.so:/usr/lib/libp533.so:ro
+      - ./data/iturhf/data:/opt/iturhf/data:ro
+      - ./app:/app:ro
+      - ./app/config.yaml:/app/config.yaml
+      - ./data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"         # tamaño máximo por fichero
+        max-file: "3"           # número de rotaciones
+
+volumes:
+  redis-data:

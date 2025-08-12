@@ -1,0 +1,171 @@
+# app/main.py
+
+import os
+import json
+import logging
+from datetime import datetime
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from predict_from_spots import start_spot_predictor
+from telnet_rbn import start_telnet_sessions
+from hf_utils import lookup_coords, run_iturhfprop
+from config import CONFIG
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+app = FastAPI()
+
+@app.on_event("startup")
+def startup_event():
+    start_telnet_sessions()
+    start_spot_predictor()
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+# Modelo extendido
+class PredictionInput(BaseModel):
+    callsign_user: str        # ← $user de DXSpider
+    callsign_spotter: str     # ← quien hizo el spot
+    callsign_dx: str          # ← el DX
+    frequency: float
+    mode: str = "ANALOG"
+    timestamp: str            # ISO 8601
+    comment: str = ""         # comentario original opcional
+
+import redis
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+CACHE_EXPIRE = int(os.getenv("CACHE_EXPIRE", "3600"))
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
+
+def format_dxspider_comment(comment, sp_snr, sp_rel, lp_snr, lp_rel):
+    pred = f"[SP:{sp_snr}:{sp_rel}] [LP:{lp_snr}:{lp_rel}]"
+    final = f"{pred} {comment}".strip()
+    return final[:80]
+
+@app.post("/predict")
+def predict(req: PredictionInput):
+    logger.info("📥 API /predict recibió: %s", req.dict())
+    # 1. Predicción para devolver (user → dx)
+    user_coords = lookup_coords(req.callsign_user)
+    dx_coords = lookup_coords(req.callsign_dx)
+    if not user_coords or not dx_coords:
+        raise HTTPException(400, "No coords for one callsign")
+
+    try:
+        dt = datetime.fromisoformat(req.timestamp.replace("Z", "+00:00"))
+    except Exception:
+        raise HTTPException(400, "Invalid timestamp")
+
+    cache_key = f"pred:{req.callsign_user}:{req.callsign_dx}:{req.frequency}:{req.timestamp}"
+    if (cached := r.get(cache_key)):
+        prediction = json.loads(cached)
+        modified_comment = format_dxspider_comment(
+            req.comment,
+            prediction["short_path"]["snr"],
+            prediction["short_path"]["reliability"],
+            prediction["long_path"]["snr"],
+            prediction["long_path"]["reliability"]
+        )
+        return {
+            "prediction": prediction,
+            "cached": True,
+            "new_comment": modified_comment
+        }
+
+    # 2. Ejecutar predicción principal user → dx
+    short_path = run_iturhfprop("SHORTPATH", user_coords, dx_coords, dt, req.frequency, req.mode)
+    long_path = run_iturhfprop("LONGPATH", user_coords, dx_coords, dt, req.frequency, req.mode)
+
+    prediction = {
+        "short_path": short_path,
+        "long_path": long_path
+    }
+
+    r.set(cache_key, json.dumps(prediction), ex=CACHE_EXPIRE)
+
+    # 3. Procesar si es humano
+    is_human = req.mode.upper() not in ["DIGITAL", "FT8", "FT4", "RTTY", "PSK", "CW"]
+    if is_human:
+        cfg = CONFIG.get("human_spot", {})
+
+        if cfg.get("enabled", True):
+            # 3a. Calcular también spotter → dx y guardar en Redis
+            spotter_coords = lookup_coords(req.callsign_spotter)
+            if spotter_coords and dx_coords:
+                sp_real = run_iturhfprop("SHORTPATH", spotter_coords, dx_coords, dt, req.frequency, "ANALOG")
+                lp_real = run_iturhfprop("LONGPATH", spotter_coords, dx_coords, dt, req.frequency, "ANALOG")
+                redis_key = f"spot:human:{req.callsign_spotter}:{req.callsign_dx}:{round(req.frequency,1)}"
+                r.setex(redis_key, cfg.get("ttl_minutes", 10) * 60, json.dumps({
+                    "spotter": req.callsign_spotter,
+                    "dx": req.callsign_dx,
+                    "frequency": round(req.frequency, 1),
+                    "mode": "",  # modo real no conocido
+                    "timestamp": dt.isoformat(),
+                    "spotter_coords": spotter_coords,
+                    "dx_coords": dx_coords,
+                    "source": "human",
+                    "prediction": {
+                        "short_path": sp_real,
+                        "long_path": lp_real
+                    }
+                }))
+
+        # 3b. Loguear en fichero si está habilitado
+        if cfg.get("log_predictions", False):
+            try:
+                comment_for_log = format_dxspider_comment(
+                    req.comment,
+                    short_path["snr"], short_path["reliability"],
+                    long_path["snr"], long_path["reliability"]
+                )
+                line = f"{req.callsign_user}> DX de {req.callsign_spotter}:  {req.frequency}  {req.callsign_dx}  {comment_for_log}  {req.timestamp}"
+                with open("/data/hf_predictions.log", "a") as f:
+                    f.write(line + "\n")
+                logger.info(f"📝 Spot humano logueado: {line}")
+            except Exception as e:
+                logger.warning(f"⚠️ Error writing to log: {e}")
+
+    # 4. Preparar respuesta para DXSpider
+    new_comment = format_dxspider_comment(
+        req.comment,
+        short_path["snr"], short_path["reliability"],
+        long_path["snr"], long_path["reliability"]
+    )
+
+    return {
+        "prediction": prediction,
+        "cached": False,
+        "new_comment": new_comment
+    }
+
+@app.post("/predict_manual")
+def predict_manual(req: PredictionInput):
+    """
+    Predicción directa: no se cachea, no se almacena, no se loguea.
+    """
+    tx = lookup_coords(req.callsign_user)
+    rx = lookup_coords(req.callsign_dx)
+    if not tx or not rx:
+        raise HTTPException(400, "No coords for one callsign")
+
+    try:
+        dt = datetime.fromisoformat(req.timestamp.replace("Z", "+00:00"))
+    except Exception:
+        raise HTTPException(400, "Invalid timestamp")
+
+    short_path = run_iturhfprop("SHORTPATH", tx, rx, dt, req.frequency, req.mode)
+    long_path = run_iturhfprop("LONGPATH", tx, rx, dt, req.frequency, req.mode)
+
+    prediction = {
+        "short_path": short_path,
+        "long_path": long_path
+    }
+
+    return {
+        "prediction": prediction,
+        "cached": False
+    }

@@ -1,0 +1,184 @@
+# app/main.py
+import os
+import json
+import logging
+import subprocess
+import tempfile
+from datetime import datetime, timedelta
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import redis
+import requests
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+CACHE_EXPIRE = int(os.getenv("CACHE_EXPIRE", "3600"))
+
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
+
+try:
+    with open("/app/callsign_prefixes.json", "r") as f:
+        callsign_prefix_map = json.load(f)
+    logger.info("Loaded %d prefixes", len(callsign_prefix_map))
+except Exception:
+    logger.exception("Error decoding JSON prefixes")
+    callsign_prefix_map = {}
+
+class PredictionInput(BaseModel):
+    callsign_spotter: str
+    callsign_dx: str
+    frequency: float
+    mode: str = "ANALOG"
+    timestamp: str  # ISO 8601
+
+app = FastAPI()
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+def lookup_coords(callsign: str):
+    cs = callsign.upper()
+    for prefix, coords in callsign_prefix_map.items():
+        if cs.startswith(prefix.upper()):
+            return coords
+    return None
+
+def get_ssn_value(dt: datetime) -> int:
+    yest = dt.date() - timedelta(days=1)
+    cache_key = f"ssn:{yest.isoformat()}"
+    if (cached := r.get(cache_key)):
+        return int(cached)
+
+    url = "https://services.swpc.noaa.gov/text/daily-solar-indices.txt"
+    try:
+        resp = requests.get(url, timeout=5)
+        resp.raise_for_status()
+        for line in resp.text.splitlines():
+            if line.startswith(f"{yest.year} {yest.month:02d} {yest.day:02d}"):
+                parts = line.split()
+                ssn = int(parts[3])
+                r.set(cache_key, ssn, ex=86400 * 7)  # Cache 7 days
+                return ssn
+    except Exception:
+        logger.warning("Failed to fetch SSN, using fallback=100")
+
+    return 100  # Fallback if no data found or error
+
+def run_iturhfprop(path_type: str, tx, rx, dt, freq, mode) -> dict:
+    infile = tempfile.NamedTemporaryFile("w+", suffix=".in", delete=False)
+    outfile = tempfile.NamedTemporaryFile("w+", suffix=".out", delete=False)
+    infile.close()
+    outfile.close()
+
+    in_path = infile.name
+    out_path = outfile.name
+
+    ssn = get_ssn_value(dt)
+
+    hf_input = f"""\  
+PathName "HF P2P Prediction"
+PathTXName "TX"
+Path.L_tx.lat {tx[0]}
+Path.L_tx.lng {tx[1]}
+TXAntFilePath "ISOTROPIC"
+TXGOS 0.0
+PathRXName "RX"
+Path.L_rx.lat {rx[0]}
+Path.L_rx.lng {rx[1]}
+RXAntFilePath "ISOTROPIC"
+RXGOS 0.0
+AntennaOrientation "TX2RX"
+TXBearing 0.0
+RXBearing 0.0
+Path.year {dt.year}
+Path.month {dt.month}
+Path.hour {dt.hour}
+Path.SSN {ssn}
+Path.frequency {freq}
+Path.txpower 20
+Path.BW 2700.0
+Path.SNRr 31
+Path.Relr 90
+Path.SNRXXp 90
+Path.SIRr 23.0
+Path.type 1
+Path.tx_mode 0
+Path.SorL "{path_type}"
+Path.ManMadeNoise "RURAL"
+Path.Modulation "{mode.upper()}"
+LL.lat {rx[0]}
+LL.lng {rx[1]}
+LR.lat {rx[0]}
+LR.lng {rx[1]}
+UL.lat {rx[0]}
+UL.lng {rx[1]}
+UR.lat {rx[0]}
+UR.lng {rx[1]}
+latinc 1.0
+lnginc 1.0
+DataFilePath "/opt/iturhf/data/"
+RptFilePath "/tmp/"
+RptFileFormat "RPT_BCR | RPT_SNR"
+"""
+
+    with open(in_path, "w") as f:
+        f.write(hf_input)
+
+    logger.info("ITURHFProp INPUT (Path: %s):\n%s", path_type, hf_input)
+
+    cmd = ["/usr/bin/ITURHFProp", "-s", "-c", "-t", in_path, out_path]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    if proc.returncode != 0:
+        logger.error("ITURHFProp failed for %s: %s", path_type, proc.stdout)
+        raise HTTPException(500, f"ITURHFProp failed for {path_type}")
+
+    try:
+        with open(out_path, "r") as f:
+            for line in f:
+                if line.startswith(str(dt.month)):
+                    parts = line.strip().split(",")
+                    snr = int(round(float(parts[3])))
+                    bcr = int(round(float(parts[4])))
+                    return {"snr": snr, "reliability": bcr}
+    except Exception:
+        logger.exception(f"Error parsing report ({path_type})")
+        raise HTTPException(500, f"Failed reading report for {path_type}")
+
+    raise HTTPException(500, f"No data found in report for {path_type}")
+
+@app.post("/predict")
+def predict(req: PredictionInput):
+    tx = lookup_coords(req.callsign_spotter)
+    rx = lookup_coords(req.callsign_dx)
+    if not tx or not rx:
+        raise HTTPException(400, "No coords for one callsign")
+
+    try:
+        dt = datetime.fromisoformat(req.timestamp.replace("Z", "+00:00"))
+    except:
+        raise HTTPException(400, "Invalid timestamp")
+
+    cache_key = f"pred:{req.callsign_spotter}:{req.callsign_dx}:{req.frequency}:{req.timestamp}"
+    if (cached := r.get(cache_key)):
+        return {**req.dict(), "prediction": json.loads(cached), "cached": True}
+
+    short_path = run_iturhfprop("SHORTPATH", tx, rx, dt, req.frequency, req.mode)
+    long_path = run_iturhfprop("LONGPATH", tx, rx, dt, req.frequency, req.mode)
+
+    prediction = {
+        "short_path": {
+            "snr": short_path["snr"],
+            "reliability": short_path["reliability"]
+        },
+        "long_path": {
+            "snr": long_path["snr"],
+            "reliability": long_path["reliability"]
+        }
+    }
+
+    r.set(cache_key, json.dumps(prediction), ex=CACHE_EXPIRE)
+    return {**req.dict(), "prediction": prediction, "cached": False}

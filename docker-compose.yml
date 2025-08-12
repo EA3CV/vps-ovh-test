@@ -1,27 +1,67 @@
 services:
 
-    ea3cv-4:
-        container_name: ea3cv-4
-        restart: unless-stopped
-        image: dxspider:v157r633-test
-        ports:
-            - "7304:7300"
-            - "7304:7301"
-            - "7304:7302"
-        volumes:
-            # Binds para persistencia de datos del Nodo 4  
-            - "/root/volumenes/dxspider/nodo-4/msg:/spider/msg"
-            - "/root/volumenes/dxspider/nodo-4/local_data:/spider/local_data"
-            - "/root/volumenes/dxspider/nodo-4/local_cmd:/spider/local_cmd"
-            - "/root/volumenes/dxspider/nodo-4/connect:/spider/connect"
-            - "/root/volumenes/dxspider/nodo-4/scripts:/spider/scripts"
-            - "/root/volumenes/dxspider/nodo-4/local:/spider/local"
-            - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
-            # Binds para persistencia de datos comunes a todos los Nodos
-            - "/root/volumenes/dxspider/common/filter:/spider/filter"
-            # Binds para inyectar configuraciones comunes a todos los nodos
-            #- "${PWD}/dxspider-nodos/common/filter/spots/in_node_default.pl:/spider/filter/spots/in_node_default.pl"
-            #- "${PWD}/dxspider-nodos/common/filter/spots/node_default.pl:/spider/filter/spots/node_default.pl"
+  # === DXSPIDER ===
+  ea3cv-4:
+    container_name: ea3cv-4
+    restart: unless-stopped
+    image: dxspider:v157r633-test
+    ports:
+      - "7304:7300"
+      - "7314:7301"
+      - "7324:7302"
+    volumes:
+      # Binds para persistencia de datos del Nodo 4
+      - "/root/volumenes/dxspider/nodo-4/msg:/spider/msg"
+      - "/root/volumenes/dxspider/nodo-4/local_data:/spider/local_data"
+      - "/root/volumenes/dxspider/nodo-4/local_cmd:/spider/local_cmd"
+      - "/root/volumenes/dxspider/nodo-4/connect:/spider/connect"
+      - "/root/volumenes/dxspider/nodo-4/scripts:/spider/scripts"
+      - "/root/volumenes/dxspider/nodo-4/local:/spider/local"
+      - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
+      # Binds comunes a todos los nodos
+      - "/root/volumenes/dxspider/common/filter:/spider/filter"
+
+  # === REDIS (hf-predictor) ===
+  redis:
+    image: redis:7-alpine
+    container_name: hf-redis
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis-data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # === API (hf-predictor) ===
+  api:
+    build:
+      context: ./hf-predictor
+      dockerfile: Dockerfile
+    container_name: hf-api
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./hf-predictor/data/iturhf/bin/ITURHFProp:/usr/bin/ITURHFProp:ro
+      - ./hf-predictor/data/iturhf/lib/libp372.so:/usr/lib/libp372.so:ro
+      - ./hf-predictor/data/iturhf/lib/libp533.so:/usr/lib/libp533.so:ro
+      - ./hf-predictor/data/iturhf/data:/opt/iturhf/data:ro
+      - ./hf-predictor/app:/app:ro
+      - ./hf-predictor/app/config.yaml:/app/config.yaml
+      - ./hf-predictor/data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   dxspider_net:
@@ -29,4 +69,7 @@ networks:
     ipam:
       driver: default
       config:
-          - subnet: 172.60.0.0/24
+        - subnet: 172.60.0.0/24
+
+volumes:
+  redis-data:
