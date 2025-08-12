@@ -20,11 +20,17 @@ services:
       - "/root/volumenes/dxspider/common/contrib:/spider/contrib"
       # Binds comunes a todos los nodos
       - "/root/volumenes/dxspider/common/filter:/spider/filter"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # === REDIS (hf-predictor) ===
   redis:
     image: redis:7-alpine
     container_name: hf-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
     restart: always
@@ -42,10 +48,12 @@ services:
       context: ./hf-predictor
       dockerfile: Dockerfile
     container_name: hf-api
+    restart: unless-stopped
     depends_on:
       - redis
     ports:
       - "8000:8000"
+    restart: always
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
