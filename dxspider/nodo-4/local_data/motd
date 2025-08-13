@@ -1,21 +1,41 @@
 
-Se han incorporado nuevas funcionalidades para los spots RBN.
-Se pueden ver los spots generados por los RBN pero con filtros de calidad.
- 
-Para activar los spots RBN:    set/skimmer     o   set/wantrbn
-Para desactivar los spots RBN: unset/skimmer   o   unset/wantrbn
- 
-Para aplicar filtros a los spots RBN los argumentos son los mismos,
-pero los comandos son especificos: rej/rbn, acc/rbn, cle/rbn.
- 
-Los spots RBN apareceran con:
- 
-         Q:n, donde 'n' es las veces que se escucho el DX
-         '*' indica una posible variacion en la frecuencia
-         '+' es un respot
-         Z:n, donde 'n' son las zonas CQ donde se escucho al DX
- 
-+--------------------------------------------------------------------+
-| Si necesitas contactar por favor envia un email a ea3cv@cronux.net |
-|     If you need to contact please send email to ea3cv@cronux.net   |
-+--------------------------------------------------------------------+
+┌────────────────────────────────────────────────────────────────────────────┐
+│                NUEVAS FUNCIONALIDADES PARA SPOTS HUMANOS HF                │
+├────────────────────────────────────────────────────────────────────────────┤
+│ Cada spot recibido en bandas de HF se analiza en tiempo real para calcular │
+│ la probabilidad de QSO entre el usuario y la estación DX, en ese momento.  │
+│                                                                            │
+│ Etiquetas añadidas al inicio del comentario del spot:                      │
+│   [SP:85]        -> Solo paso corto, probabilidad 85 %                     │
+│   [LP:2]         -> Solo paso largo, probabilidad 2 %                      │
+│   [SP:70,LP:12]  -> Ambos caminos: 70 % corto, 12 % largo                  │
+│   [0]            -> Sin posibilidad de contacto                            │
+│                                                                            │
+│ Parámetros usados para la predicción:                                      │
+│   • Antena: dipolo                                                         │
+│   • Potencia: 100 W                                                        │
+│   • Entorno: ruido típico de ciudad                                        │
+│   • Indicadores: SSN, SFI (F10.7 cm), Kp, SNR50p, SNR                      │
+│                                                                            │
+│ El sistema está en desarrollo. Se agradecen reportes y comentarios.        │
+└────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────┐
+│                  NEW FEATURES FOR HUMAN HF SPOTS                           │
+├────────────────────────────────────────────────────────────────────────────┤
+│ Each spot received on HF bands is analysed in real time to estimate the    │
+│ probability of a QSO between the user and the DX station at that moment.   │
+│                                                                            │
+│ Tags added at the beginning of the spot comment:                           │
+│   [SP:85]        -> Short path only, 85% probability                       │
+│   [LP:2]         -> Long path only, 2% probability                         │
+│   [SP:70,LP:12]  -> Both paths: 70% short, 12% long                        │
+│   [0]            -> No contact possible                                    │
+│                                                                            │
+│ Parameters used for the prediction:                                        │
+│   • Antenna: dipole                                                        │
+│   • Power: 100 W                                                           │
+│   • Environment: typical urban noise                                       │
+│   • Indicators: SSN, SFI (F10.7 cm), Kp, SNR50p, SNR                       │
+│                                                                            │
+│ The system is under development. Reports and feedback are welcome.         │
+└────────────────────────────────────────────────────────────────────────────┘
