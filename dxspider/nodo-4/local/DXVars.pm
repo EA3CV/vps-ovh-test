@@ -74,12 +74,12 @@ $mysql_admin_pass = "rootpass";
 $mysql_db   = "dxspider";
 $mysql_user = "ea3cv";
 $mysql_pass = "dxpass";
-$mysql_host = "127.0.0.1";
+$mysql_host = "dx-mariadb";
 #$mysql_table = "users";
 
 # Data for SQLite
-$sqlite_dsn = "dbi:SQLite:dbname=$root/local_data/dxspider.db";
-$sqlite_dbuser = "";
-$sqlite_dbpass = "";
+#$sqlite_dsn = "dbi:SQLite:dbname=$root/local_data/dxspider.db";
+#$sqlite_dbuser = "";
+#$sqlite_dbpass = "";
 
 1;
