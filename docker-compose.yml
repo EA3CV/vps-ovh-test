@@ -1,10 +1,36 @@
 services:
 
   # === DXSPIDER ===
+  dx-mariadb:
+    image: mariadb:11
+    container_name: dx-mariadb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: adminpass
+      MYSQL_DATABASE: dxspider
+      MYSQL_USER: ea3cv
+      MYSQL_PASSWORD: dxpass
+      TZ: Europe/Madrid
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /root/volumenes/dx-mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+    networks: [dxspider_net]
+
   ea3cv-4:
     container_name: ea3cv-4
     restart: unless-stopped
     image: dxspider:v157r633-test
+    depends_on:
+      dx-mariadb:
+        condition: service_healthy
     ports:
       - "7304:7300"
       - "7314:7301"
@@ -22,25 +48,8 @@ services:
       - "/root/volumenes/dxspider/common/filter:/spider/filter"
     logging:
       driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  dx-mariadb:
-    image: mariadb:11
-    container_name: dx-mariadb
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: adminpass
-      MYSQL_DATABASE: dxspider
-      MYSQL_USER: ea3cv
-      MYSQL_PASSWORD: dxpass
-      TZ: Europe/Madrid
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - /root/volumenes/dx-mariadb:/var/lib/mysql
+      options: { max-size: "10m", max-file: "3" }
+    networks: [dxspider_net]
 
   # === REDIS (hf-predictor) ===
   redis:
@@ -51,11 +60,16 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h 127.0.0.1 ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
     logging:
       driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      options: { max-size: "10m", max-file: "3" }
+    networks: [dxspider_net]
 
   # === API (hf-predictor) ===
   api:
@@ -65,12 +79,13 @@ services:
     container_name: hf-api
     restart: unless-stopped
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     ports:
       - "8000:8000"
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      REDIS_HOST: redis   # o 'hf-redis' si prefieres usar el container_name
+      REDIS_PORT: "6379"
     volumes:
       - ./hf-predictor/data/iturhf/bin/ITURHFProp:/usr/bin/ITURHFProp:ro
       - ./hf-predictor/data/iturhf/lib/libp372.so:/usr/lib/libp372.so:ro
@@ -81,9 +96,8 @@ services:
       - ./hf-predictor/data:/data
     logging:
       driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      options: { max-size: "10m", max-file: "3" }
+    networks: [dxspider_net]
 
 networks:
   dxspider_net:
