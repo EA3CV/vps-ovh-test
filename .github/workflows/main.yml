@@ -1,68 +1,26 @@
-name: CI Servicios OVH
+name: CI/CD de los contenedores DXSpider
 
 on:
   push:
     branches: [ main ]
+
   workflow_dispatch:
 
-concurrency:
-  group: ovh-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  copy:
-    runs-on: [self-hosted, linux, x64]
+  copy-files:
+    runs-on: self-hosted
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
-      - name: Definir variables
-        shell: bash
-        run: |
-          echo "REPO_DIR=${GITHUB_WORKSPACE}" >> "$GITHUB_ENV"
-          echo "DX_BASE=/root/volumenes/dxspider" >> "$GITHUB_ENV"
-
-      - name: Preparar carpetas de volúmenes
-        shell: bash
-        run: |
-          set -e
-          mkdir -p "$DX_BASE/nodo-4"/{connect,local,local_cmd,local_data,scripts,msg}
-          mkdir -p "$DX_BASE/common"/{contrib,filter}
-
-      - name: (Opcional) Normalizar finales de línea en el repo
-        shell: bash
-        run: |
-          command -v dos2unix >/dev/null 2>&1 && \
-            dos2unix -q -k -r "$REPO_DIR/dxspider" || true
-
-      - name: Sembrar NODO-4 (solo si faltan archivos)
-        shell: bash
-        run: |
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/connect/"    "$DX_BASE/nodo-4/connect/"    || true
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local/"      "$DX_BASE/nodo-4/local/"      || true
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local_cmd/"  "$DX_BASE/nodo-4/local_cmd/"  || true
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local_data/" "$DX_BASE/nodo-4/local_data/" || true
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/scripts/"    "$DX_BASE/nodo-4/scripts/"    || true
-
-      - name: Sembrar COMMON (solo si faltan archivos)
-        shell: bash
-        run: |
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/common/contrib/" "$DX_BASE/common/contrib/" 2>/dev/null || true
-          rsync -a --ignore-existing "$REPO_DIR/dxspider/common/filter/"  "$DX_BASE/common/filter/"  2>/dev/null || true
-
-      - name: Permisos uid 1000 (sysop)
-        shell: bash
-        run: |
-          chown -R 1000:1000 "$DX_BASE"
-          chmod -R u+rwX,g+rwX "$DX_BASE"
+      - name: Ficheros Nodo 4
+        run: cp -r nodo-4 /root/volumenes/dxspider
 
   deploy:
-    runs-on: [self-hosted, linux, x64]
-    needs: copy
-    steps:
-      - uses: actions/checkout@v4
+    runs-on: self-hosted
 
-      - name: Levantar servicios (build + proyecto estable)
-        shell: bash
-        run: |
-          cd "${GITHUB_WORKSPACE}"
-          docker compose -p vps-ovh-test up -d --build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy de contenedores DXSpider ITU
+        run: docker compose up -d
