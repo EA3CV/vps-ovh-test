@@ -22,6 +22,7 @@ RUN apk update && \
         perl-db_file perl-digest-sha1 perl-io-socket-ssl \
         perl-net-telnet perl-timedate perl-yaml-libyaml \
         perl-test-simple perl-app-cpanminus \
+        perl-libwww perl-lwp-protocol-https \
         wget curl bash nano \
         perl-net-smtp-ssl tini \
         gettext libintl \
@@ -53,3 +54,4 @@ RUN apk update && \
     rm -rf /resources
 
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
+
