@@ -22,7 +22,7 @@ services:
       timeout: 3s
       retries: 30
       start_period: 20s
-    networks: [dxspider_net]
+    networks: [dxspider_api]
 
   ea3cv-4:
     container_name: ea3cv-4
@@ -49,7 +49,7 @@ services:
     logging:
       driver: "json-file"
       options: { max-size: "10m", max-file: "3" }
-    networks: [dxspider_net]
+    networks: [dxspider_api]
 
   # === REDIS (hf-predictor) ===
   redis:
@@ -69,7 +69,7 @@ services:
     logging:
       driver: "json-file"
       options: { max-size: "10m", max-file: "3" }
-    networks: [dxspider_net]
+    networks: [dxspider_api]
 
   # === API (hf-predictor) ===
   api:
@@ -97,15 +97,15 @@ services:
     logging:
       driver: "json-file"
       options: { max-size: "10m", max-file: "3" }
-    networks: [dxspider_net]
+    networks: [dxspider_api]
 
 networks:
-  dxspider_net:
+  dxspider_api:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 172.60.1.0/24
+        - subnet: 172.61.0.0/24
 
 volumes:
   redis-data:
