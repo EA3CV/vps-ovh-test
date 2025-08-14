@@ -19,12 +19,15 @@ jobs:
       - name: Sincronizar Nodo 4 al volumen
         run: |
           set -euo pipefail
-          install -d -m 755 /root/volumenes/dxspider/nodo-4
-          rsync -a --delete nodo-4/ /root/volumenes/dxspider/nodo-4/
+          src="$GITHUB_WORKSPACE/dxspider/nodo-4"
+          dest="/root/volumenes/dxspider/nodo-4"
+          install -d -m 755 "$dest"
+          rsync -a --delete "$src"/ "$dest"/
 
   deploy:
     runs-on: [self-hosted, repo-vps-ovh-test]
     needs: copy-files
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +40,7 @@ jobs:
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
 
       - name: Levantar contenedores
-        working-directory: .
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           if docker compose version >/dev/null 2>&1; then
