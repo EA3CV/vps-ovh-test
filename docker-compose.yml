@@ -84,7 +84,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      REDIS_HOST: redis   # o 'hf-redis' si prefieres usar el container_name
+      REDIS_HOST: redis
       REDIS_PORT: "6379"
     volumes:
       - ./hf-predictor/data/iturhf/bin/ITURHFProp:/usr/bin/ITURHFProp:ro
@@ -100,12 +100,10 @@ services:
     networks: [dxspider_api]
 
 networks:
+  # Reutiliza la red existente del stack de test para evitar solapes/creaciones nuevas
   dxspider_api:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.61.0.0/24
+    external: true
+    name: vps-ovh-test_dxspider_net
 
 volumes:
   redis-data:
