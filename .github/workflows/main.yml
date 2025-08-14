@@ -5,45 +5,64 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+concurrency:
+  group: ovh-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   copy:
     runs-on: [self-hosted, linux, x64]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Definir variables
+        shell: bash
+        run: |
+          echo "REPO_DIR=${GITHUB_WORKSPACE}" >> "$GITHUB_ENV"
+          echo "DX_BASE=/root/volumenes/dxspider" >> "$GITHUB_ENV"
 
       - name: Preparar carpetas de volúmenes
+        shell: bash
         run: |
-          mkdir -p /root/volumenes/dxspider/nodo-4/{connect,local,local_cmd,local_data,scripts}
-          mkdir -p /root/volumenes/dxspider/common/{contrib,filter}
+          set -e
+          mkdir -p "$DX_BASE/nodo-4"/{connect,local,local_cmd,local_data,scripts,msg}
+          mkdir -p "$DX_BASE/common"/{contrib,filter}
 
-      - name: Copiar CONNECT
-        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/connect/ /root/volumenes/dxspider/nodo-4/connect/
-
-      - name: Copiar LOCAL
-        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local/ /root/volumenes/dxspider/nodo-4/local/
-
-      - name: Copiar LOCAL_CMD
-        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local_cmd/ /root/volumenes/dxspider/nodo-4/local_cmd/
-
-      - name: Copiar LOCAL_DATA
-        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/local_data/ /root/volumenes/dxspider/nodo-4/local_data/
-
-      - name: Copiar SCRIPTS
-        run: rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/nodo-4/scripts/ /root/volumenes/dxspider/nodo-4/scripts/
-
-      - name: (Opcional) Copiar COMMON
+      - name: (Opcional) Normalizar finales de línea en el repo
+        shell: bash
         run: |
-          [ -d /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/contrib ] && rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/contrib/ /root/volumenes/dxspider/common/contrib/
-          [ -d /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/filter  ] && rsync -a /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/dxspider/common/filter/  /root/volumenes/dxspider/common/filter/
+          command -v dos2unix >/dev/null 2>&1 && \
+            dos2unix -q -k -r "$REPO_DIR/dxspider" || true
+
+      - name: Sembrar NODO-4 (solo si faltan archivos)
+        shell: bash
+        run: |
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/connect/"    "$DX_BASE/nodo-4/connect/"    || true
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local/"      "$DX_BASE/nodo-4/local/"      || true
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local_cmd/"  "$DX_BASE/nodo-4/local_cmd/"  || true
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/local_data/" "$DX_BASE/nodo-4/local_data/" || true
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/nodo-4/scripts/"    "$DX_BASE/nodo-4/scripts/"    || true
+
+      - name: Sembrar COMMON (solo si faltan archivos)
+        shell: bash
+        run: |
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/common/contrib/" "$DX_BASE/common/contrib/" 2>/dev/null || true
+          rsync -a --ignore-existing "$REPO_DIR/dxspider/common/filter/"  "$DX_BASE/common/filter/"  2>/dev/null || true
 
       - name: Permisos uid 1000 (sysop)
-        run: chown -R 1000:1000 /root/volumenes/dxspider
+        shell: bash
+        run: |
+          chown -R 1000:1000 "$DX_BASE"
+          chmod -R u+rwX,g+rwX "$DX_BASE"
 
   deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, x64]
     needs: copy
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Deploy con Docker Compose V2
-        run: docker compose -f /root/actions-runner/_work/vps-ovh-test/vps-ovh-test/docker-compose.yml -p dxspider up -d
+      - name: Levantar servicios (build + proyecto estable)
+        shell: bash
+        run: |
+          cd "${GITHUB_WORKSPACE}"
+          docker compose -p vps-ovh-test up -d --build
