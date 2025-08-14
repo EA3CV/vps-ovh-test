@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   copy-files:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, repo-vps-ovh-test]
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
           rsync -a --delete nodo-4/ /root/volumenes/dxspider/nodo-4/
 
   deploy:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, repo-vps-ovh-test]
     needs: copy-files
 
     steps:
@@ -37,7 +37,6 @@ jobs:
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
 
       - name: Levantar contenedores
-        # cambia si tu docker-compose.yml no está en la raíz del repo
         working-directory: .
         run: |
           set -euo pipefail
