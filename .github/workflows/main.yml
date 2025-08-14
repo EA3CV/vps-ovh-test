@@ -1,26 +1,52 @@
-name: CI/CD de los contenedores DXSpider
+name: CI/CD DXSpider
 
 on:
   push:
     branches: [ main ]
-
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   copy-files:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Ficheros Nodo 4
-        run: cp -r nodo-4 /root/volumenes/dxspider
+      - name: Sincronizar Nodo 4 al volumen
+        run: |
+          set -euo pipefail
+          install -d -m 755 /root/volumenes/dxspider/nodo-4
+          rsync -a --delete nodo-4/ /root/volumenes/dxspider/nodo-4/
 
   deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
+    needs: copy-files
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Deploy de contenedores DXSpider ITU
-        run: docker compose up -d
+      # Quita este paso si no usas GHCR/registro privado
+      - name: (Opcional) Login GHCR
+        if: env.GHCR_PAT != ''
+        run: echo "$GHCR_PAT" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
+
+      - name: Levantar contenedores
+        # cambia si tu docker-compose.yml no está en la raíz del repo
+        working-directory: .
+        run: |
+          set -euo pipefail
+          if docker compose version >/dev/null 2>&1; then
+            docker compose pull || true
+            docker compose up -d
+            docker compose ps -a
+          else
+            docker-compose pull || true
+            docker-compose up -d
+            docker-compose ps -a
+          fi
